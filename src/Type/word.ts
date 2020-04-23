@@ -5,7 +5,7 @@ length: number
 id: string
 
 constructor(word: string){
-    this.word = word
+    this.word = word.toUpperCase()
     this.length = word.length
     this.id = uuidv4();
 }
