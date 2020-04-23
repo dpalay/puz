@@ -17,7 +17,7 @@ const TopMenu: React.FC<Iprops> = (props: Iprops) => {
 
     return(
         <header>
-        <Menu color="blue" inverted>
+        <Menu color="blue" inverted pointing secondary>
             <Menu.Item name='new_puzzle'onClick={handleClick}>
                 <Icon name="plus circle"/>
                 New Puzzle
