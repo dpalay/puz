@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React from 'react';
 import './App.css';
 import TopMenu from '../TopMenu';
+import PuzzleArea from '../PuzzleArea';
 
 const App: React.FC = () =>  {
 
@@ -8,7 +9,7 @@ const App: React.FC = () =>  {
     <div className="App">
       <TopMenu/>
       <main>
-
+        <PuzzleArea/>
       </main>
     </div>
   );
