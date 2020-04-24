@@ -1,6 +1,6 @@
 import React from 'react'
 import { List } from 'semantic-ui-react'
-import {Word} from '../../Type';
+import {Word} from '../../Classes';
 
 interface Iprops {
     words: Word[]

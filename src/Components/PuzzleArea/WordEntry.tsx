@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import {Word} from '../../Type';
+import {Word} from '../../Classes';
 import { Input, Form, FormProps } from 'semantic-ui-react';
 
 interface Iprops {
