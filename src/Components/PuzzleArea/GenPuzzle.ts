@@ -1,4 +1,5 @@
 import Word from "../../Type/word";
+import {v4 as uuidv4} from 'uuid'
 
 enum Direction {
   upRight = 1,
@@ -11,13 +12,20 @@ enum Direction {
   up,
 }
 class Cell {
+  id: string;
   row: number;
   col: number;
   value: string;
+  words: string[]; //ID of the words this cell contains
+  garbage: boolean; // is this just filler?
+
   constructor(value: string, [row, col]: [number, number]) {
+      this.id = uuidv4()
     this.row = row;
     this.col = col;
     this.value = value;
+    this.words = [];
+    this.garbage = true;
   }
   move = (direction: Direction): [number, number] => {
     return [this.row + Puzzle.dy[direction], this.col + Puzzle.dx[direction]];
@@ -26,146 +34,71 @@ class Cell {
 }
 
 class Puzzle {
-  static alpha = "_ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-  static dx = [0, 1, 1, 1, 0, -1, -1, -1, 0];
-  static dy = [0, -1, 0, 1, 1, 1, 0, -1, -1];
-  words: Word[];
-  numWords: number;
-  numLetters: number;
-  minWordSize: number;
-  maxSize: number;
-  puzSize: number;
-  maxWordLength: number;
-  lettersUsed: Array<number>;
-  board: Cell[][];
-  directionUsage: number[];
-  cellsWithLetter: Cell[][];
 
-  constructor(words: Word[], minWordSize: number) {
-    this.minWordSize = minWordSize;
-    this.board = [];
-    this.cellsWithLetter = Puzzle.alpha.split("").map((x) => []);
-    this.maxSize = 1;
-    this.puzSize = 1;
-    this.words = [...words];
-    this.lettersUsed = [];
-    this.numWords = words.length;
-    this.numLetters = 0;
-    this.maxWordLength = Math.max(...words.map((word) => word.length));
-    this.directionUsage = [0, 0, 0, 0, 0, 0, 0, 0, 0];
-
-    // Go through the list of words
-    words.forEach((word) => {
-      // Add the letters of each word to the lettersUsed object
-      word.word.split("").forEach((letter) => {
-        let index = Puzzle.alpha.indexOf(letter);
-        if (this.lettersUsed[index]) {
-          this.lettersUsed[index] = this.lettersUsed[index] + 1;
-        } else {
-          this.lettersUsed[index] = 1;
-        }
-      });
-      // add the length of the word to the total number of letters
-      this.numLetters += word.length;
-      //add the word to the list of words by length
-    });
-
-    // set the size of the puzzle
-    this.puzSize = Math.max(
-      Math.floor(Math.sqrt(this.numLetters - this.numWords) + 1),
-      this.maxWordLength
-    );
-    this.maxSize = this.puzSize + 10;
-
-    // init the puzzle with blanks
-    for (let row = 0; row < this.maxSize; row++) {
-      this.board[row] = [];
-      for (let col = 0; col < this.maxSize; col++) {
-        this.board[row][col] = new Cell(" ", [row, col]);
-      }
+    cells(): Cell[] {
+        return this.board.flat(1)
     }
 
-    this.surroundDash();
-
-    let wordsInPuzzle = 0;
-    words
-      .sort((a, b) => b.length - a.length)
-      .forEach((word) => {
-        wordsInPuzzle++;
-        // 1st word is special case
-        if (wordsInPuzzle === 1) {
-          this.addWord(word, this.getCell([this.puzSize, this.puzSize]), 7);
-        } else {
-          // try an overlap
-          let { found, cell, direction } = this.overlap(word);
-          if (found && cell && direction) {
-            this.addWord(word, cell, direction);
-          } else {
-            let { found, cell, direction } = this.insertWord(word);
-            if (found && cell && direction) {
-              this.addWord(word, cell, direction);
-            } else {
-              this.increasePuzzleSize();
-              let { found, cell, direction } = this.overlap(word);
-              if (found && cell && direction) {
-                this.addWord(word, cell, direction);
-              } else {
-                let { found, cell, direction } = this.insertWord(word);
-                if (found && cell && direction) {
-                  this.addWord(word, cell, direction);
-                }
-              }
-            }
-          }
-          this.print();
-        }
-      });
+  fillPuzzle() {
+    let cells = this.cells().filter((cell) => cell.garbage)
+    cells.forEach((cell) => {
+      cell.value = this.lettersUsed.charAt(
+        Math.floor(Math.random() * this.lettersUsed.length)
+      );
+    });
   }
 
-  getCell = ([row, col]: [number, number]): Cell => {
-    if (row < 0 || row > this.puzSize || col < 0 || col > this.puzSize) {return new Cell("-",[0,0])}
+  getCell([row, col]: [number, number]): Cell {
+    if (row < 0 || row > this.puzSize || col < 0 || col > this.puzSize) {
+      return new Cell("-", [0, 0]);
+    }
     return this.board[row][col];
-  };
-
-  setCell(v: string, [row, col]: [number, number]) {
-    this.board[row][col].value = v;
   }
 
-  print = () => {
+  setCell(v: string, [row, col]: [number, number], garbage?: boolean) {
+    this.board[row][col].value = v;
+    if (garbage !== undefined) {
+      this.board[row][col].garbage = garbage;
+    }
+  }
+
+  print(): void {
     console.log("Printing [");
     this.board.forEach((row) =>
       console.log(row.map((col) => col.value).join("|"))
     );
     console.log("]");
-  };
+  }
 
-  surroundDash = () => {
+  surroundDash(): void {
     for (let diag = 0; diag <= this.puzSize; diag++) {
-      this.setCell("-", [diag, 0]);
-      this.setCell("-", [0, diag]);
-      this.setCell("-", [this.puzSize + 1, diag]);
-      this.setCell("-", [diag, this.puzSize + 1]);
+      this.setCell("-", [diag, 0], false);
+      this.setCell("-", [0, diag], false);
+      this.setCell("-", [this.puzSize + 1, diag], false);
+      this.setCell("-", [diag, this.puzSize + 1], false);
     }
-    this.setCell("-", [this.puzSize + 1, this.puzSize + 1]);
-  };
+    this.setCell("-", [this.puzSize + 1, this.puzSize + 1], false);
+  }
 
-  increasePuzzleSize = () => {
+  increasePuzzleSize(): void {
     this.puzSize++;
     for (let j = 1; j < this.puzSize; j++) {
-      this.setCell(" ", [this.puzSize, j]);
-      this.setCell(" ", [j, this.puzSize]);
+      this.setCell(" ", [this.puzSize, j], true);
+      this.setCell(" ", [j, this.puzSize], true);
     }
-    this.setCell(" ", [this.puzSize, this.puzSize])
+    this.setCell(" ", [this.puzSize, this.puzSize], true);
     this.surroundDash();
-  };
+  }
 
-  addWord = (newWord: Word, startingCell: Cell, direction: Direction) => {
+  addWord(newWord: Word, startingCell: Cell, direction: Direction) {
     this.directionUsage[direction]++;
     let curCell = startingCell;
     newWord.word.split("").forEach((letter) => {
       if (letter !== " ") {
         if (curCell.value === " ") {
           this.setCell(letter, curCell.pos());
+          curCell.words = [newWord.id, ...curCell.words];
+          curCell.garbage = false;
           this.cellsWithLetter[Puzzle.alpha.indexOf(letter)].unshift(curCell);
         }
       }
@@ -196,11 +129,11 @@ class Puzzle {
           break;
       }
     });
-  };
+  }
 
-  insertWord = (
+  insertWord(
     newWord: Word
-  ): { found: boolean; cell?: Cell; direction?: Direction } => {
+  ): { found: boolean; cell?: Cell; direction?: Direction } {
     let result: { found: boolean; cell?: Cell; direction: Direction } = {
       found: false,
       direction: 0,
@@ -209,22 +142,24 @@ class Puzzle {
     let numFound = 0;
     let smallestDirectionUseFound = Infinity;
     //loop through the board
-    this.board.slice(1,this.puzSize).forEach((row) => {
-      row.slice(1,this.puzSize).forEach((cell) => {
+    for (let row of this.board.slice(1, this.puzSize + 1)) {
+      for (let cell of row.slice(1, this.puzSize + 1)) {
         // if the cell is blank, we have a starting spot to check to see if we can fit the word
         if (cell.value === " ") {
           for (let direction = 1; direction <= 4; direction++) {
             let dx = Puzzle.dx[direction];
             let dy = Puzzle.dy[direction];
             let emptyCount = 1;
-            while (
-              emptyCount < newWord.length &&
-              this.getCell([
+            let testCell = this.getCell([
+              cell.row + emptyCount * dy,
+              cell.col + emptyCount * dx,
+            ]);
+            while (emptyCount < newWord.length && testCell.value === " ") {
+              emptyCount++;
+              testCell = this.getCell([
                 cell.row + emptyCount * dy,
                 cell.col + emptyCount * dx,
-              ]).value === " "
-            ) {
-              emptyCount++;
+              ]);
             }
             numFound++;
             if (emptyCount === newWord.length) {
@@ -293,14 +228,14 @@ class Puzzle {
             }
           }
         }
-      });
-    });
+      }
+    }
     return result;
-  };
+  }
 
-  overlap = (
+  overlap(
     newWord: Word
-  ): { found: boolean; cell?: Cell; direction?: Direction } => {
+  ): { found: boolean; cell?: Cell; direction?: Direction } {
     let result: { found: boolean; cell?: Cell; direction: Direction } = {
       found: false,
       direction: 0,
@@ -398,7 +333,97 @@ class Puzzle {
       }
     });
     return result;
-  };
+  }
+
+  static alpha = "_ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+  static dx = [0, 1, 1, 1, 0, -1, -1, -1, 0];
+  static dy = [0, -1, 0, 1, 1, 1, 0, -1, -1];
+  words: Word[];
+  numWords: number;
+  numLetters: number;
+  minWordSize: number;
+  maxSize: number;
+  puzSize: number;
+  maxWordLength: number;
+  lettersUsed: string;
+  board: Cell[][];
+  directionUsage: number[];
+  cellsWithLetter: Cell[][];
+
+  constructor(words: Word[], minWordSize: number) {
+    this.minWordSize = minWordSize;
+    this.board = [];
+    this.cellsWithLetter = Puzzle.alpha.split("").map((x) => []);
+    this.maxSize = 1;
+    this.puzSize = 1;
+    this.words = [...words];
+    this.lettersUsed = "";
+    this.numWords = words.length;
+    this.numLetters = 0;
+    this.maxWordLength = Math.max(...words.map((word) => word.length));
+    this.directionUsage = [0, 0, 0, 0, 0, 0, 0, 0, 0];
+
+    // Go through the list of words
+    this.lettersUsed = words
+      .map((word) => word)
+      .join("")
+      .split(" ")
+      .join("");
+    this.numLetters = this.lettersUsed.length;
+
+    // set the size of the puzzle
+    this.puzSize = Math.max(
+      Math.floor(Math.sqrt(this.numLetters - this.numWords) + 1),
+      this.maxWordLength
+    );
+    this.maxSize = this.puzSize + 2;
+
+    // init the puzzle with blanks
+    for (let row = 0; row < this.maxSize; row++) {
+      this.board[row] = [];
+      for (let col = 0; col < this.maxSize; col++) {
+        this.board[row][col] = new Cell(" ", [row, col]);
+      }
+    }
+
+    this.surroundDash();
+
+    let wordsInPuzzle = 0;
+    words
+      .sort((a, b) => b.length - a.length)
+      .forEach((word) => {
+        wordsInPuzzle++;
+        // 1st word is special case
+        if (wordsInPuzzle === 1) {
+          this.addWord(word, this.getCell([this.puzSize, this.puzSize]), 7);
+        } else {
+          // try an overlap
+          let { found, cell, direction } = this.overlap(word);
+          if (found && cell && direction) {
+            this.addWord(word, cell, direction);
+          } else {
+            let { found, cell, direction } = this.insertWord(word);
+            if (found && cell && direction) {
+              this.addWord(word, cell, direction);
+            } else {
+              this.increasePuzzleSize();
+              this.print();
+              let { found, cell, direction } = this.overlap(word);
+              if (found && cell && direction) {
+                this.addWord(word, cell, direction);
+              } else {
+                let { found, cell, direction } = this.insertWord(word);
+                if (found && cell && direction) {
+                  this.addWord(word, cell, direction);
+                }
+              }
+            }
+          }
+          this.print();
+        }
+      });
+    this.fillPuzzle();
+  }
 }
 
 export default Puzzle;
