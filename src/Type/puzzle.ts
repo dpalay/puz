@@ -1,5 +1,4 @@
 import Word from "./word";
-import {v4 as uuidv4} from 'uuid'
 import Cell from "./cell";
 import Direction from "./direction";
 
