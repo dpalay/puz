@@ -1,3 +1,16 @@
+- [Wordpuzzle](#wordpuzzle)
+  - [Initial documentation](#initial-documentation)
+  - [Playground](#playground)
+  - [Basic Structure](#basic-structure)
+    - [Classes and Enums](#classes-and-enums)
+      - [Word](#word)
+      - [Cell](#cell)
+      - [Puzzle](#puzzle)
+      - [Directions](#directions)
+    - [Word Placement in the Puzzle](#word-placement-in-the-puzzle)
+    - [Algorithm to generate puzzle board](#algorithm-to-generate-puzzle-board)
+  - [Learn More](#learn-more)
+
 # Wordpuzzle  
 
 ## Initial documentation
@@ -6,6 +19,9 @@ This is yet another rendition of a hidden word puzzle program. The intent is to 
 The actual algorithm was developed in the 1980s in FORTRAN by Roger Palay. Since then it has been redeveopled and coded in various languages including PASCAL, ALGOL, and Perl. 
 
 In this case, the program is being written as a single page web application in typescript with a React frontend. The code was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+
+## Playground
+This code is deployed via [Firebase Hosting](https://firebase.google.com/) and is available for use [here](https://puzzlesearch-d0f54.web.app)
 
 ## Basic Structure
 
