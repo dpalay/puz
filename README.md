@@ -16,7 +16,7 @@
 ## Initial documentation
 This is yet another rendition of a hidden word puzzle program. The intent is to create a program that reads words given as text and then creates a **compact**, **square** hidden word puzzle that contains all of the given words. 
 
-The actual algorithm was developed in the 1980s in FORTRAN by Roger Palay. Since then it has been redeveopled and coded in various languages including PASCAL, ALGOL, and Perl. 
+The actual algorithm was developed in the 1980s in FORTRAN by Roger Palay. Since then it has been redeveopled and coded in various languages including PASCAL, ALGOL, and [Perl](https://github.com/dpalay/puz/blob/master/puzzle.pl). 
 
 In this case, the program is being written as a single page web application in typescript with a React frontend. The code was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
