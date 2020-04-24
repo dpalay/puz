@@ -1,4 +1,4 @@
-import Direction from './direction'
+import {Direction} from '../Structures/'
 import {v4 as uuidv4} from 'uuid'
 import Puzzle from './puzzle'
 
