@@ -1,37 +1,8 @@
-import Word from "../../Type/word";
+import Word from "./word";
 import {v4 as uuidv4} from 'uuid'
+import Cell from "./cell";
+import Direction from "./direction";
 
-enum Direction {
-  upRight = 1,
-  right,
-  downRight,
-  down,
-  downLeft,
-  left,
-  upLeft,
-  up,
-}
-class Cell {
-  id: string;
-  row: number;
-  col: number;
-  value: string;
-  words: string[]; //ID of the words this cell contains
-  garbage: boolean; // is this just filler?
-
-  constructor(value: string, [row, col]: [number, number]) {
-      this.id = uuidv4()
-    this.row = row;
-    this.col = col;
-    this.value = value;
-    this.words = [];
-    this.garbage = true;
-  }
-  move = (direction: Direction): [number, number] => {
-    return [this.row + Puzzle.dy[direction], this.col + Puzzle.dx[direction]];
-  };
-  pos = (): [number, number] => [this.row, this.col];
-}
 
 class Puzzle {
 
@@ -142,6 +113,7 @@ class Puzzle {
     let numFound = 0;
     let smallestDirectionUseFound = Infinity;
     //loop through the board
+    //TODO:  make it randomized so that it is less predictable where it puts the word
     for (let row of this.board.slice(1, this.puzSize + 1)) {
       for (let cell of row.slice(1, this.puzSize + 1)) {
         // if the cell is blank, we have a starting spot to check to see if we can fit the word

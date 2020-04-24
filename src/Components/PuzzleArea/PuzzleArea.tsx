@@ -1,9 +1,8 @@
 import React, { useState, useMemo } from 'react'
-import Word from '../../Type/word';
+import {Puzzle, Word} from '../../Type'
 import WordList from './WordList';
 import WordEntry from './WordEntry';
 import { Grid, Table, TableRow, TableCell, Icon, Button } from 'semantic-ui-react';
-import Puzzle from './GenPuzzle'
 
 interface Iprops {
 
