@@ -19,7 +19,7 @@ const WordEntry: React.FC<Iprops> = (props: Iprops) => {
         // if it already exists, return error message
 
         // if it doesn't, add it
-        setWords([...words, new Word(inputContent.trim())])
+        setWords([...words, new Word(inputContent.trim())].sort((a,b) => b.length - a.length))
         setInputContent("")
     }
 
@@ -40,6 +40,9 @@ const WordEntry: React.FC<Iprops> = (props: Iprops) => {
                 </Form.Field>
 
             </Form>
+            <div className="ErrorFlash">
+
+            </div>
         </div>
     )
 }

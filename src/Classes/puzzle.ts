@@ -362,7 +362,7 @@ class Puzzle {
     this.surroundDash();
 
     let wordsInPuzzle = 0;
-    words
+    this.words
       .sort((a, b) => b.length - a.length)
       .forEach((word) => {
         wordsInPuzzle++;
