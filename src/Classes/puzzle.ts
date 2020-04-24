@@ -1,6 +1,6 @@
 import Word from "./word";
 import Cell from "./cell";
-import Direction from "./direction";
+import {alpha, Direction} from '../Structures/'
 
 
 class Puzzle {
@@ -69,7 +69,7 @@ class Puzzle {
           this.setCell(letter, curCell.pos());
           curCell.words = [newWord.id, ...curCell.words];
           curCell.garbage = false;
-          this.cellsWithLetter[Puzzle.alpha.indexOf(letter)].unshift(curCell);
+          this.cellsWithLetter[this.alphabet.indexOf(letter)].unshift(curCell);
         }
       }
       switch (direction) {
@@ -220,7 +220,7 @@ class Puzzle {
         let lettersAfter = length - index - 1;
 
         //Find all the cells that have this letter
-        let cells = [...this.cellsWithLetter[Puzzle.alpha.indexOf(letter)]];
+        let cells = [...this.cellsWithLetter[this.alphabet.indexOf(letter)]];
         while (cells.length > 0) {
           let tmpCell: Cell = cells.shift() as Cell;
           for (let direction = 1; direction <= 8; direction++) {
@@ -306,9 +306,10 @@ class Puzzle {
     return result;
   }
 
-  static alpha = "_ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+  static defaultAlphabet = "_ABCDEFGHIJKLMNOPQRSTUVWXYZ";
   static dx = [0, 1, 1, 1, 0, -1, -1, -1, 0];
   static dy = [0, -1, 0, 1, 1, 1, 0, -1, -1];
+  alphabet: string;
   words: Word[];
   numWords: number;
   numLetters: number;
@@ -321,10 +322,11 @@ class Puzzle {
   directionUsage: number[];
   cellsWithLetter: Cell[][];
 
-  constructor(words: Word[], minWordSize: number) {
+  constructor(words: Word[], minWordSize: number, alphabet?: string) {
+    this.alphabet = alphabet || alpha || Puzzle.defaultAlphabet
     this.minWordSize = minWordSize;
     this.board = [];
-    this.cellsWithLetter = Puzzle.alpha.split("").map((x) => []);
+    this.cellsWithLetter = this.alphabet.split("").map((x) => []);
     this.maxSize = 1;
     this.puzSize = 1;
     this.words = [...words];
