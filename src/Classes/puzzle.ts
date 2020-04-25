@@ -1,5 +1,4 @@
-import Word from "./word";
-import Cell from "./cell";
+import {Word, Cell } from "./";
 import {alpha, Direction} from '../Structures/'
 
 
@@ -67,9 +66,14 @@ class Puzzle {
       if (letter !== " ") {
         if (curCell.value === " ") {
           this.setCell(letter, curCell.pos());
-          curCell.words = [newWord.id, ...curCell.words];
+          console.log(curCell.words)
+          curCell.words = [newWord, ...curCell.words];
+          console.log(curCell.words)
           curCell.garbage = false;
           this.cellsWithLetter[this.alphabet.indexOf(letter)].unshift(curCell);
+        }
+        else{
+          curCell.words = [newWord, ...curCell.words];
         }
       }
       switch (direction) {

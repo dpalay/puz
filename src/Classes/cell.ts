@@ -1,13 +1,13 @@
 import {Direction} from '../Structures/'
 import {v4 as uuidv4} from 'uuid'
-import Puzzle from './puzzle'
+import { Word, Puzzle } from '.';
 
 class Cell {
     id: string;
     row: number;
     col: number;
     value: string;
-    words: string[]; //ID of the words this cell contains
+    words: Word[]; //ID of the words this cell contains
     garbage: boolean; // is this just filler?
   
     constructor(value: string, [row, col]: [number, number]) {
