@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from 'react'
-import {Puzzle, Word} from '../../Classes'
+import { Puzzle, Word } from '../../Classes'
 import WordList from './WordList';
 import WordEntry from './WordEntry';
 import { Grid, Table, TableRow, TableCell, Icon, Button } from 'semantic-ui-react';
@@ -10,8 +10,9 @@ interface Iprops {
 
 
 const PuzzleArea: React.FC<Iprops> = (props: Iprops) => {
-    const [words, setWords] = useState<Word[]>([])
+
     const [showFill, setShowFill] = useState<boolean>(true)
+    const [words, setWords] = useState<Word[]>([new Word("Test"), new Word("Hello there"), new Word("General Kenobi")])
     const [selectedWord, setSelectedWord] = useState<Word|null>(null)
     const puzzle = useMemo(() => new Puzzle(words, 4), [words])
 
@@ -36,8 +37,8 @@ const PuzzleArea: React.FC<Iprops> = (props: Iprops) => {
                     {words.length > 0 ? (
                         <Table celled>
                             <Table.Body>
-                                {puzzle.board.map(row => (
-                                    <TableRow>
+                                {puzzle.board.map((row, i) => (
+                                    <TableRow key={`row${i}`}>
                                         {row.map(cell => (
                                             <TableCell textAlign="center" verticalAlign="middle" style={computeStyle(cell)} key={cell.id} onClick={() => console.log(cell)}>
                                                 {cell.garbage ? (showFill ? cell.value : <Icon name="trash" size="tiny" />) : cell.value}
