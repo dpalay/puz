@@ -47,7 +47,7 @@ const PuzzleArea: React.FC<Iprops> = (props: Iprops) => {
                         .map(line => line.trim().toUpperCase())
                           .filter(line => !line.match(/[^A-Z ]/g))
                           .filter(line => !(line.length < minLength))
-                          .filter(line => words.map(word => word.word).includes(line))
+                          .filter(line => !words.map(word => word.word).includes(line))
                         .forEach(word => { 
                             console.log(`adding word ${word} with length: ${word.length}`); 
                             matches.push(new Word(word)) })
@@ -57,7 +57,7 @@ const PuzzleArea: React.FC<Iprops> = (props: Iprops) => {
             reader.readAsText(file)
         })
     }, [])
-    const { getRootProps, getInputProps } = useDropzone({ onDrop, noClick: true, noKeyboard:true })
+    const { getRootProps, getInputProps } = useDropzone({ onDrop, noClick:true, noKeyboard:true })
 
     const removeWord = (wordToRemove: Word) => {
         setWords(words.filter(word => word !== wordToRemove))
