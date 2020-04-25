@@ -13,7 +13,7 @@ const TopMenu: React.FC<Iprops> = (props: Iprops) => {
     }
 
     return (
-        <header>
+        <header className={"no-print"}>
             <Menu color="blue" inverted pointing secondary>
                 <Menu.Item name='new_puzzle' onClick={handleClick}>
                     <Icon name="plus circle" />

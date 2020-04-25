@@ -3,6 +3,7 @@ import { Puzzle, Word } from '../../Classes'
 import WordList from './WordList';
 import WordEntry from './WordEntry';
 import { Grid, Table, TableRow, TableCell, Icon, Button } from 'semantic-ui-react';
+import './PuzzleArea.css'
 
 interface Iprops {
 
@@ -36,7 +37,7 @@ const PuzzleArea: React.FC<Iprops> = (props: Iprops) => {
     return (
         <Grid divided padded={"vertically"} relaxed style={{ height: '95vh' }}>
             <Grid.Row color="blue" >
-                <Grid.Column width={3}>
+                <Grid.Column width={3} className={"no-print"}>
                     <Button onClick={() => setShowFill(!showFill)} content="Toggle Filler" />
                     <WordEntry setWords={setWords} words={words} setSelectedWord={setSelectedWord} minLength={4} />
                     <WordList words={words} selectedWord={selectedWord} handleSelect={handleSelect} removeWord={removeWord} />
