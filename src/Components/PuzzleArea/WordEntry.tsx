@@ -1,14 +1,15 @@
 import React, { useState } from 'react'
-import {Word} from '../../Classes';
+import { Word } from '../../Classes';
 import { Input, Form, FormProps } from 'semantic-ui-react';
 
 interface Iprops {
     words: Word[],
     setWords: React.Dispatch<React.SetStateAction<Word[]>>
+    setSelectedWord: React.Dispatch<React.SetStateAction<Word | null>>
 }
 
 const WordEntry: React.FC<Iprops> = (props: Iprops) => {
-    const { words, setWords } = props
+    const { words, setWords, setSelectedWord } = props
     const [inputContent, setInputContent] = useState<string>("")
 
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>, data: FormProps) => {
@@ -19,7 +20,8 @@ const WordEntry: React.FC<Iprops> = (props: Iprops) => {
         // if it already exists, return error message
 
         // if it doesn't, add it
-        setWords([...words, new Word(inputContent.trim())].sort((a,b) => b.length - a.length))
+        setWords([...words, new Word(inputContent.trim())].sort((a, b) => b.length - a.length))
+        setSelectedWord(null)
         setInputContent("")
     }
 

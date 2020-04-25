@@ -20,10 +20,14 @@ const PuzzleArea: React.FC<Iprops> = (props: Iprops) => {
         setWords(words.filter(word => word !== wordToRemove))
     }
 
+    const handleSelect = (wordToSelect: Word) => {
+        if (selectedWord === wordToSelect) {setSelectedWord(null)}
+        else {setSelectedWord(wordToSelect)}
+    }
+
 
     const cellsForWord = puzzle.cells().filter(cell => {if (selectedWord) {return cell.words.includes(selectedWord)} else return false})
     const computeStyle = (cell: { id: string }) => {
-        
         if (cellsForWord.some(cellforword => cellforword.id === cell.id)) {
             return { background: '#E60' }
         }
@@ -34,8 +38,8 @@ const PuzzleArea: React.FC<Iprops> = (props: Iprops) => {
             <Grid.Row color="blue" >
                 <Grid.Column width={3}>
                     <Button onClick={() => setShowFill(!showFill)} content="Toggle Filler" />
-                    <WordEntry setWords={setWords} words={words}></WordEntry>
-                    <WordList words={words} setSelectedWordId={setSelectedWord} removeWord={removeWord}></WordList>
+                    <WordEntry setWords={setWords} words={words} setSelectedWord={setSelectedWord} />
+                    <WordList words={words} selectedWord={selectedWord} handleSelect={handleSelect} removeWord={removeWord} />
                 </Grid.Column>
                 <Grid.Column width={10}>
                     {words.length > 0 ? (
