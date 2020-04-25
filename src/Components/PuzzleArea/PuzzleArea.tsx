@@ -38,7 +38,7 @@ const PuzzleArea: React.FC<Iprops> = (props: Iprops) => {
             <Grid.Row color="blue" >
                 <Grid.Column width={3}>
                     <Button onClick={() => setShowFill(!showFill)} content="Toggle Filler" />
-                    <WordEntry setWords={setWords} words={words} setSelectedWord={setSelectedWord} />
+                    <WordEntry setWords={setWords} words={words} setSelectedWord={setSelectedWord} minLength={4} />
                     <WordList words={words} selectedWord={selectedWord} handleSelect={handleSelect} removeWord={removeWord} />
                 </Grid.Column>
                 <Grid.Column width={10}>
