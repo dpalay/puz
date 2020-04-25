@@ -1,7 +1,6 @@
 import {Word, Cell } from "./";
 import {alpha, Direction} from '../Structures/'
 
-
 class Puzzle {
 
     cells(): Cell[] {
@@ -40,22 +39,33 @@ class Puzzle {
   }
 
   surroundDash(): void {
+    //console.log("surrounding in dashes")
     for (let diag = 0; diag <= this.puzSize; diag++) {
       this.setCell("-", [diag, 0], false);
       this.setCell("-", [0, diag], false);
       this.setCell("-", [this.puzSize + 1, diag], false);
       this.setCell("-", [diag, this.puzSize + 1], false);
     }
+    
+    //console.log("putting in corner")
     this.setCell("-", [this.puzSize + 1, this.puzSize + 1], false);
   }
 
   increasePuzzleSize(): void {
     this.puzSize++;
-    for (let j = 1; j < this.puzSize; j++) {
+    //console.log(`Puzzle is now [${this.puzSize}x${this.puzSize}]`)
+    if (!this.board[this.puzSize+1])
+    {
+      this.board[this.puzSize+1] = []
+      for (let i = 0; i<=this.puzSize+1; i++){
+        this.board[this.puzSize+1][i] = new Cell(" ",[this.puzSize+1,i])
+        this.board[i][this.puzSize+1] = new Cell(" ",[i,this.puzSize+1])
+      }
+    }
+    for (let j = 1; j <= this.puzSize; j++) {
       this.setCell(" ", [this.puzSize, j], true);
       this.setCell(" ", [j, this.puzSize], true);
     }
-    this.setCell(" ", [this.puzSize, this.puzSize], true);
     this.surroundDash();
   }
 
@@ -353,6 +363,7 @@ class Puzzle {
     );
     this.maxSize = this.puzSize + 2;
 
+    //this.print()
     // init the puzzle with blanks
     for (let row = 0; row < this.maxSize; row++) {
       this.board[row] = [];
@@ -361,33 +372,47 @@ class Puzzle {
       }
     }
 
+    //this.print()
     this.surroundDash();
+    //this.print()
 
     let wordsInPuzzle = 0;
     this.words
       .sort((a, b) => b.length - a.length)
       .forEach((word) => {
+        //console.log(`starting with new word: ${word.word}`)
+        //this.print()
         wordsInPuzzle++;
+        
         // 1st word is special case
         if (wordsInPuzzle === 1) {
+          //console.log("adding first word on the diagonal")
           this.addWord(word, this.getCell([this.puzSize, this.puzSize]), 7);
         } else {
           // try an overlap
+          //console.log(`Can ${word.word} overlap?`)
           let { found, cell, direction } = this.overlap(word);
           if (found && cell && direction) {
+            //console.log(`Yes!  Adding ${word.word} @ row:${cell.row} and col:${cell.col} heading in ${Direction[direction]}`)
             this.addWord(word, cell, direction);
           } else {
+            //console.log(`No. Can ${word.word} fit?`)
             let { found, cell, direction } = this.insertWord(word);
             if (found && cell && direction) {
+              //console.log(`Yes!  Adding ${word.word} @ row:${cell.row} and col:${cell.col} heading in ${Direction[direction]}`)
               this.addWord(word, cell, direction);
             } else {
+              //console.log(`No. Increasing puzzle size`)
               this.increasePuzzleSize();
+              //console.log(`Can ${word.word} overlap?`)
               let { found, cell, direction } = this.overlap(word);
               if (found && cell && direction) {
+                //console.log(`Yes!  Adding ${word.word} @ row:${cell.row} and col:${cell.col} heading in ${Direction[direction]}`)
                 this.addWord(word, cell, direction);
               } else {
                 let { found, cell, direction } = this.insertWord(word);
                 if (found && cell && direction) {
+                  //console.log(`Yes!  Adding ${word.word} @ row:${cell.row} and col:${cell.col} heading in ${Direction[direction]}`)
                   this.addWord(word, cell, direction);
                 }
               }
