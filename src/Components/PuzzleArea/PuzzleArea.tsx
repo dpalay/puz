@@ -16,6 +16,10 @@ const PuzzleArea: React.FC<Iprops> = (props: Iprops) => {
     const [selectedWord, setSelectedWord] = useState<Word|null>(null)
     const puzzle = useMemo(() => new Puzzle(words, 4), [words])
 
+    const removeWord = (wordToRemove: Word) => {
+        setWords(words.filter(word => word !== wordToRemove))
+    }
+
 
     const cellsForWord = puzzle.cells().filter(cell => {if (selectedWord) {return cell.words.includes(selectedWord)} else return false})
     const computeStyle = (cell: { id: string }) => {
@@ -31,7 +35,7 @@ const PuzzleArea: React.FC<Iprops> = (props: Iprops) => {
                 <Grid.Column width={3}>
                     <Button onClick={() => setShowFill(!showFill)} content="Toggle Filler" />
                     <WordEntry setWords={setWords} words={words}></WordEntry>
-                    <WordList words={words} setSelectedWordId={setSelectedWord}></WordList>
+                    <WordList words={words} setSelectedWordId={setSelectedWord} removeWord={removeWord}></WordList>
                 </Grid.Column>
                 <Grid.Column width={10}>
                     {words.length > 0 ? (
