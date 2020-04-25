@@ -3,7 +3,7 @@ import { Puzzle, Word } from '../../Classes'
 import WordList from './WordList';
 import WordEntry from './WordEntry';
 import { Grid, Table, TableRow, TableCell, Icon, Button } from 'semantic-ui-react';
-import './PuzzleArea.css'
+
 
 interface Iprops {
 
