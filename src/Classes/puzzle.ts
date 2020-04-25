@@ -66,9 +66,7 @@ class Puzzle {
       if (letter !== " ") {
         if (curCell.value === " ") {
           this.setCell(letter, curCell.pos());
-          console.log(curCell.words)
           curCell.words = [newWord, ...curCell.words];
-          console.log(curCell.words)
           curCell.garbage = false;
           this.cellsWithLetter[this.alphabet.indexOf(letter)].unshift(curCell);
         }
@@ -384,7 +382,6 @@ class Puzzle {
               this.addWord(word, cell, direction);
             } else {
               this.increasePuzzleSize();
-              this.print();
               let { found, cell, direction } = this.overlap(word);
               if (found && cell && direction) {
                 this.addWord(word, cell, direction);
@@ -396,7 +393,6 @@ class Puzzle {
               }
             }
           }
-          this.print();
         }
       });
     this.fillPuzzle();
