@@ -11,8 +11,7 @@ interface Iprops {
 
 const PuzzleArea: React.FC<Iprops> = (props: Iprops) => {
 
-    const [showFill, setShowFill] = useState<boolean>(true)
-    const [words, setWords] = useState<Word[]>([new Word("Test"), new Word("Hello there"), new Word("General Kenobi")])
+    const [words, setWords] = useState<Word[]>([])
     const [selectedWord, setSelectedWord] = useState<Word|null>(null)
     const puzzle = useMemo(() => new Puzzle(words, 4), [words])
 
