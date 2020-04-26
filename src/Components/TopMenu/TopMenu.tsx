@@ -19,6 +19,12 @@ const TopMenu: React.FC<Iprops> = (props: Iprops) => {
                     <Icon name="plus circle" />
                 New Puzzle
             </Menu.Item>
+            <Menu.Item name="use_premade_puzzles">
+                Use Premade Puzzle
+            </Menu.Item>
+            <Menu.Item>
+                v.1.0.2
+            </Menu.Item>
 
             </Menu>
         </header>
