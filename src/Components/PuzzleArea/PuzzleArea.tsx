@@ -2,7 +2,7 @@ import React, { useState, useMemo, useCallback } from 'react'
 import { Puzzle, Word } from '../../Classes'
 import WordList from './WordList';
 import WordEntry from './WordEntry';
-import { Grid, Table, TableRow, TableCell, Icon, Button } from 'semantic-ui-react';
+import { Grid, Table, TableRow, Button } from 'semantic-ui-react';
 import { useDropzone } from 'react-dropzone'
 import Letter from './Letter';
 
@@ -46,19 +46,20 @@ const PuzzleArea: React.FC<Iprops> = (props: Iprops) => {
                     text
                         .split("\n")
                         .map(line => line.trim().toUpperCase())
-                          .filter(line => !line.match(/[^A-Z ]/g))
-                          .filter(line => !(line.length < minLength))
-                          .filter(line => !words.map(word => word.word).includes(line))
-                        .forEach(word => { 
-                            console.log(`adding word ${word} with length: ${word.length}`); 
-                            matches.push(new Word(word)) })
+                        .filter(line => !line.match(/[^A-Z ]/g))
+                        .filter(line => !(line.length < minLength))
+                        .filter(line => !words.map(word => word.word).includes(line))
+                        .forEach(word => {
+                            console.log(`adding word ${word} with length: ${word.length}`);
+                            matches.push(new Word(word))
+                        })
                 }
                 if (matches.length > 0) { addWord(matches) }
             }
             reader.readAsText(file)
         })
     }, [])
-    const { getRootProps, getInputProps } = useDropzone({ onDrop, noClick:true, noKeyboard:true })
+    const { getRootProps, getInputProps } = useDropzone({ onDrop, noClick: true, noKeyboard: true })
 
     const removeWord = (wordToRemove: Word) => {
         setWords(words.filter(word => word !== wordToRemove))
@@ -83,18 +84,24 @@ const PuzzleArea: React.FC<Iprops> = (props: Iprops) => {
                         <WordList words={words} selectedWord={selectedWord} handleSelect={handleSelect} removeWord={removeWord} />
                     </Grid.Column>
                     <Grid.Column width={10}>
-                        {words.length > 0 ? (
+                        <Grid.Row>
+
+                            {words.length > 0 ? (
                                 <Table unstackable celled size="small">
-                                <Table.Body>
+                                    <Table.Body>
                                         {puzzle.board.slice(1, puzzle.board.length - 1).map((row, i) => (
-                                        <TableRow key={`row${i}`}>
+                                            <TableRow key={`row${i}`}>
                                                 {row.slice(1, row.length - 1).map(cell => (
                                                     <Letter cell={cell} showFill={showFill} cellsForWord={cellsForWord} />
-                                            ))}
-                                        </TableRow>
-                                    ))}
-                                </Table.Body>
-                            </Table>) : "Add some words!"}
+                                                ))}
+                                            </TableRow>
+                                        ))}
+                                    </Table.Body>
+                                </Table>) : "Add some words!"}
+                        </Grid.Row>
+                        <Grid.Row className="only-print">
+                            Printable word list goes here
+                        </Grid.Row>
                     </Grid.Column>
                 </Grid.Row>
             </Grid>
