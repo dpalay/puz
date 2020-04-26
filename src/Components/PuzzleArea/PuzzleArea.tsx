@@ -30,7 +30,7 @@ const PuzzleArea: React.FC<Iprops> = (props: Iprops) => {
         }
     }
 
-    const onDrop = useCallback(acceptedFiles => {
+    const onDrop = (acceptedFiles: File[]) => {
         acceptedFiles.forEach((file: File) => {
             const reader = new FileReader()
 
@@ -58,7 +58,8 @@ const PuzzleArea: React.FC<Iprops> = (props: Iprops) => {
             }
             reader.readAsText(file)
         })
-    }, [])
+    }
+
     const { getRootProps, getInputProps } = useDropzone({ onDrop, noClick: true, noKeyboard: true })
 
     const removeWord = (wordToRemove: Word) => {
