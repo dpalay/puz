@@ -4,6 +4,17 @@
     {
         display: none !important;
     }
+
+    .only-print { 
+      display: initial
+       }
+}
+
+
+@media screen {
+  .only-print {
+    display: none
+  }
 }
 
 .App {
