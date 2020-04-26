@@ -9,13 +9,15 @@ import Letter from './Letter';
 
 interface Iprops {
 
+    words: Word[]
+    setWords: React.Dispatch<React.SetStateAction<Word[]>>
 }
 
 
 const PuzzleArea: React.FC<Iprops> = (props: Iprops) => {
+    const {words, setWords} = props;
     const minLength = 4
     const [showFill, setShowFill] = useState<boolean>(true)
-    const [words, setWords] = useState<Word[]>([new Word("Test"), new Word("Hello there"), new Word("General Kenobi")])
     const [selectedWord, setSelectedWord] = useState<Word | null>(null)
     const puzzle = useMemo(() => new Puzzle(words, 4), [words])
     const addWord = (word: Word | string | Word[]) => {
