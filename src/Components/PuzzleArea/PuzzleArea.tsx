@@ -4,6 +4,7 @@ import WordList from './WordList';
 import WordEntry from './WordEntry';
 import { Grid, Table, TableRow, TableCell, Icon, Button } from 'semantic-ui-react';
 import { useDropzone } from 'react-dropzone'
+import Letter from './Letter';
 
 
 interface Iprops {
@@ -70,12 +71,7 @@ const PuzzleArea: React.FC<Iprops> = (props: Iprops) => {
 
 
     const cellsForWord = puzzle.cells().filter(cell => { if (selectedWord) { return cell.words.includes(selectedWord) } else return false })
-    const computeStyle = (cell: { id: string }) => {
-        if (cellsForWord.some(cellforword => cellforword.id === cell.id)) {
-            return { background: '#E60' }
-        }
-        return { background: '#CCC' }
-    }
+
     return (
         <div {...getRootProps()}>
             <input {...getInputProps()} />
@@ -88,14 +84,12 @@ const PuzzleArea: React.FC<Iprops> = (props: Iprops) => {
                     </Grid.Column>
                     <Grid.Column width={10}>
                         {words.length > 0 ? (
-                            <Table celled>
+                                <Table unstackable celled size="small">
                                 <Table.Body>
-                                    {puzzle.board.slice(1,puzzle.board.length-1).map((row, i) => (
+                                        {puzzle.board.slice(1, puzzle.board.length - 1).map((row, i) => (
                                         <TableRow key={`row${i}`}>
-                                            {row.slice(1,row.length-1).map(cell => (
-                                                <TableCell textAlign="center" verticalAlign="middle" style={computeStyle(cell)} key={cell.id} onClick={() => console.log(cell)}>
-                                                    {cell.garbage ? (showFill ? cell.value : <Icon name="trash" size="tiny" />) : cell.value}
-                                                </TableCell>
+                                                {row.slice(1, row.length - 1).map(cell => (
+                                                    <Letter cell={cell} showFill={showFill} cellsForWord={cellsForWord} />
                                             ))}
                                         </TableRow>
                                     ))}
