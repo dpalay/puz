@@ -4,15 +4,15 @@ import TopMenu from '../TopMenu';
 import PuzzleArea from '../PuzzleArea';
 import { Word } from '../../Classes';
 
-const App: React.FC = () =>  {
+const App: React.FC = () => {
 
   const [words, setWords] = useState<Word[]>([])
-  
+
   return (
     <div className="App">
-      <TopMenu  words={words} setWords={setWords}/>
+      <TopMenu setWords={setWords} />
       <main>
-        <PuzzleArea words={words} setWords={setWords}/>
+        <PuzzleArea words={words} setWords={setWords} />
       </main>
     </div>
   );
