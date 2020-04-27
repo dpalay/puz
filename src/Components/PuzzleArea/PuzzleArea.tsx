@@ -1,10 +1,11 @@
-import React, { useState, useMemo, useCallback } from 'react'
+import React, { useState, useMemo } from 'react'
 import { Puzzle, Word } from '../../Classes'
 import WordList from './WordList';
 import WordEntry from './WordEntry';
 import { Grid, Table, TableRow, Button } from 'semantic-ui-react';
 import { useDropzone } from 'react-dropzone'
 import Letter from './Letter';
+import ClueList from './ClueList';
 
 
 interface Iprops {
@@ -103,7 +104,7 @@ const PuzzleArea: React.FC<Iprops> = (props: Iprops) => {
                                 </Table>) : "Add some words!"}
                         </Grid.Row>
                         <Grid.Row className="only-print">
-                            Printable word list goes here
+                            <ClueList words={words}/>
                         </Grid.Row>
                     </Grid.Column>
                 </Grid.Row>
