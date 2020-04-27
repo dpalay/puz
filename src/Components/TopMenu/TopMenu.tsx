@@ -1,5 +1,5 @@
 import React from 'react'
-import { Menu, MenuItemProps, Icon, Dropdown } from 'semantic-ui-react';
+import { Menu, Icon, Dropdown } from 'semantic-ui-react';
 import { puzzles } from '../../Constants'
 import { Word } from '../../Classes';
 
