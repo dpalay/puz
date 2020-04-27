@@ -1,5 +1,6 @@
 import {Word, Cell } from "./";
-import {alpha, Direction} from '../Structures/'
+import {Direction} from '../Structures/'
+import {alpha} from '../Constants'
 
 class Puzzle {
 

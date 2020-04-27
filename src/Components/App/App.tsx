@@ -10,7 +10,7 @@ const App: React.FC = () =>  {
   
   return (
     <div className="App">
-      <TopMenu/>
+      <TopMenu  words={words} setWords={setWords}/>
       <main>
         <PuzzleArea words={words} setWords={setWords}/>
       </main>

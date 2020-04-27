@@ -1,15 +1,23 @@
 import React from 'react'
 import { Menu, MenuItemProps, Icon } from 'semantic-ui-react';
+import {puzzles} from '../../Constants'
+import { Word } from '../../Classes';
 
 interface Iprops {
-
+    words: Word[]
+    setWords: React.Dispatch<React.SetStateAction<Word[]>>
 }
 
 
 
 const TopMenu: React.FC<Iprops> = (props: Iprops) => {
+    const {words, setWords} = props;
+
+
     const handleClick = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>, data: MenuItemProps) => {
-        // setActiveItem(data.name)
+        console.log(e)
+        console.log(data)
+        setWords([])
     }
 
     return (
@@ -23,7 +31,7 @@ const TopMenu: React.FC<Iprops> = (props: Iprops) => {
                 Use Premade Puzzle
             </Menu.Item>
             <Menu.Item>
-                v.1.0.2
+                v.1.0.3
             </Menu.Item>
 
             </Menu>
