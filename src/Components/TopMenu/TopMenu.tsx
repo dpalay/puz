@@ -34,7 +34,7 @@ const TopMenu: React.FC<Iprops> = (props: Iprops) => {
                     </Dropdown>
                 </Menu.Item>
                 <Menu.Item>
-                    v.1.0.3
+                    v.1.0.4
                 </Menu.Item>
             </Menu>
         </header>

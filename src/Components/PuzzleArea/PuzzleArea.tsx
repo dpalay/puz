@@ -91,12 +91,12 @@ const PuzzleArea: React.FC<Iprops> = (props: Iprops) => {
                         <Grid.Row>
 
                             {words.length > 0 ? (
-                                <Table unstackable celled size="small">
+                                <Table unstackable celled size="small" style={{cursor: "pointer"}}>
                                     <Table.Body>
                                         {puzzle.board.slice(1, puzzle.board.length - 1).map((row, i) => (
                                             <TableRow key={`row${i}`}>
-                                                {row.slice(1, row.length - 1).map(cell => (
-                                                    <Letter cell={cell} showFill={showFill} cellsForWord={cellsForWord} />
+                                                {row.slice(1, row.length - 1).map((cell,j) => (
+                                                    <Letter key={`cell${i},${j}`} cell={cell} showFill={showFill} cellsForWord={cellsForWord} />
                                                 ))}
                                             </TableRow>
                                         ))}
