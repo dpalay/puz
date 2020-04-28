@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
-import { TableCell, Icon } from 'semantic-ui-react';
 import { Cell } from '../../Classes';
+import { FireFilled } from '@ant-design/icons';
 
 interface Iprops {
     cell: Cell
@@ -10,7 +10,7 @@ interface Iprops {
 
 
 
-const Letter: React.FC<Iprops> = (props: Iprops) => {
+const PuzCell: React.FC<Iprops> = (props: Iprops) => {
     const [filledIn, setFilledIn] = useState<boolean>(false)
     const {cell, showFill, cellsForWord} = props
     const computeStyle = (cell: { id: string }) => {
@@ -20,11 +20,11 @@ const Letter: React.FC<Iprops> = (props: Iprops) => {
         return filledIn ? {background: '#4477EE'} : { background: '#CCC' }
     }
     return (
-        <TableCell textAlign="center" verticalAlign="middle" style={computeStyle(cell)} key={cell.id} onClick={() => {setFilledIn(!filledIn);console.log(cell)}}>
-            {cell.garbage ? (showFill ? cell.value : <Icon name="trash" size="tiny" />) : cell.value}
-        </TableCell>
+        <td style={computeStyle(cell)} key={cell.id} onClick={() => console.log(cell)}>
+            {cell.garbage ? (showFill ? cell.value : <FireFilled/>) : cell.value}
+        </td>
     )
 
 }
 
-export default Letter;
+export default PuzCell;

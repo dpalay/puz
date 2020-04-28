@@ -2,21 +2,22 @@ import React, { useState, useMemo } from 'react'
 import { Puzzle, Word } from '../../Classes'
 import WordList from './WordList';
 import WordEntry from './WordEntry';
-import { Grid, Table, TableRow, Button } from 'semantic-ui-react';
-import { useDropzone } from 'react-dropzone'
-import Letter from './Letter';
+import PuzCell from './PuzCell';
 import ClueList from './ClueList';
+import { Row, Col, Button } from 'antd'
+import { useDropzone } from 'react-dropzone'
+import './PuzzleArea.css'
+
 
 
 interface Iprops {
-
     words: Word[]
     setWords: React.Dispatch<React.SetStateAction<Word[]>>
 }
 
 
 const PuzzleArea: React.FC<Iprops> = (props: Iprops) => {
-    const {words, setWords} = props;
+    const { words, setWords } = props;
     const minLength = 4
     const [showFill, setShowFill] = useState<boolean>(true)
     const [selectedWord, setSelectedWord] = useState<Word | null>(null)
@@ -78,39 +79,36 @@ const PuzzleArea: React.FC<Iprops> = (props: Iprops) => {
     const cellsForWord = puzzle.cells().filter(cell => { if (selectedWord) { return cell.words.includes(selectedWord) } else return false })
 
     return (
-        <div {...getRootProps()}>
+        <div {...getRootProps()} style={{background: "lightblue", height: "98vh"}}>
             <input {...getInputProps()} />
-            <Grid divided padded={"vertically"} relaxed style={{ height: '95vh' }}>
-                <Grid.Row color="blue" >
-                    <Grid.Column width={3} className={"no-print"}>
-                        <Button onClick={() => setShowFill(!showFill)} content="Toggle Filler" />
-                        <WordEntry setWords={setWords} words={words} setSelectedWord={setSelectedWord} minLength={minLength} />
-                        <WordList words={words} selectedWord={selectedWord} handleSelect={handleSelect} removeWord={removeWord} />
-                    </Grid.Column>
-                    <Grid.Column width={10}>
-                        <Grid.Row>
-
-                            {words.length > 0 ? (
-                                <Table unstackable celled size="small" style={{cursor: "pointer"}}>
-                                    <Table.Body>
-                                        {puzzle.board.slice(1, puzzle.board.length - 1).map((row, i) => (
-                                            <TableRow key={`row${i}`}>
-                                                {row.slice(1, row.length - 1).map((cell,j) => (
-                                                    <Letter key={`cell${i},${j}`} cell={cell} showFill={showFill} cellsForWord={cellsForWord} />
-                                                ))}
-                                            </TableRow>
-                                        ))}
-                                    </Table.Body>
-                                </Table>) : "Add some words!"}
-                        </Grid.Row>
-                        <Grid.Row className="only-print">
-                            <ClueList words={words}/>
-                        </Grid.Row>
-                    </Grid.Column>
-                </Grid.Row>
-            </Grid>
+            <Row  gutter={16} >
+                <Col span={18}  order={2}>
+                    <Row>
+                        {words.length > 0 ? (
+                            <table className="puzTable">
+                                <tbody>
+                                    {puzzle.board.slice(1, puzzle.board.length - 1).map((row, i) => (
+                                        <tr key={`row${i}`}>
+                                            {row.slice(1, row.length - 1).map(cell => (
+                                                <PuzCell cell={cell} showFill={showFill} cellsForWord={cellsForWord} />
+                                            ))}
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
+                        ) : "Add some words!"}
+                    </Row>
+                    <Row className="only-print">
+                        <ClueList words={words} />
+                    </Row>
+                </Col>
+                <Col span={4} order={1} className={"no-print"}>
+                    <Button onClick={() => setShowFill(!showFill)} title="Toggle Filler" />
+                    <WordEntry setWords={setWords} words={words} setSelectedWord={setSelectedWord} minLength={minLength} />
+                    <WordList words={words} selectedWord={selectedWord} handleSelect={handleSelect} removeWord={removeWord} />
+                </Col>
+            </Row>
         </div>
-
     )
 
 }
