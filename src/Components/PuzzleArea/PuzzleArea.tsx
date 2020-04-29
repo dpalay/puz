@@ -79,7 +79,7 @@ const PuzzleArea: React.FC<Iprops> = (props: Iprops) => {
     const cellsForWord = puzzle.cells().filter(cell => { if (selectedWord) { return cell.words.includes(selectedWord) } else return false })
 
     return (
-        <div {...getRootProps()} style={{background: "lightblue", height: "98vh"}}>
+        <div {...getRootProps()} >
             <input {...getInputProps()} />
             <Row  gutter={16} >
                 <Col span={18}  order={2}>
@@ -103,7 +103,7 @@ const PuzzleArea: React.FC<Iprops> = (props: Iprops) => {
                     </Row>
                 </Col>
                 <Col span={4} order={1} className={"no-print"}>
-                    <Button onClick={() => setShowFill(!showFill)} title="Toggle Filler" />
+                    <Button onClick={() => setShowFill(!showFill)} type="primary" disabled={words.length === 0}>Toggle Filler</Button>
                     <WordEntry setWords={setWords} words={words} setSelectedWord={setSelectedWord} minLength={minLength} />
                     <WordList words={words} selectedWord={selectedWord} handleSelect={handleSelect} removeWord={removeWord} />
                 </Col>

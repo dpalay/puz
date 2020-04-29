@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { puzzles } from '../../Constants'
 import { Word } from '../../Classes';
 import {Menu} from 'antd'
@@ -15,7 +15,7 @@ const TopMenu: React.FC<Iprops> = (props: Iprops) => {
     const {SubMenu} = Menu;
     return (
         <header className={"no-print"}>
-            <Menu mode="horizontal"  >
+            <Menu mode="horizontal"  style={{background: "lightblue"}}>
                 <Menu.Item key='new_puzzle' onClick={() => setWords([])}>
                 <PlusCircleTwoTone />
                     New Puzzle

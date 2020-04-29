@@ -1,6 +1,7 @@
 import React from 'react'
-import { List } from 'semantic-ui-react'
+import { List } from 'antd'
 import { Word } from '../../Classes';
+import { CloseCircleOutlined } from '@ant-design/icons';
 
 interface Iprops {
     handleSelect: (word: Word) => void
@@ -12,24 +13,21 @@ interface Iprops {
 
 
 const WordList: React.FC<Iprops> = (props: Iprops) => {
-    const { words,  handleSelect, removeWord, selectedWord } = props
+    const { words, handleSelect, removeWord, selectedWord } = props
     const computeStyle = (word: Word) => {
-        if (word === selectedWord){
-            return {background: "green"}
+        if (word === selectedWord) {
+            return { background: "green" }
         }
     }
-    
+
     return (
-        <List>
-            {words.map(word => (
-                <List.Item key={word.id} >
-                    <List.Icon color="red" className="Icon" name="x" onClick={() => {removeWord(word)}}/>
-                    <List.Content onClick={() => handleSelect(word)} style={computeStyle(word)} onContextMenu={(e: React.SyntheticEvent) => {e.preventDefault();removeWord(word)}}>
-                        {word.toString()}
-                    </List.Content>
-                </List.Item>
-            ))}
-        </List>
+        <List size="small" dataSource={words} renderItem={word => (
+            <List.Item key={word.id} onClick={() => handleSelect(word)} style={{ cursor: "default", ...computeStyle(word) }} onContextMenu={(e: React.SyntheticEvent) => { e.preventDefault(); removeWord(word) }}>
+                <CloseCircleOutlined onClick={() => { removeWord(word) }} style={{ color: "red" }} />
+                {word.toString()}
+            </List.Item>)} />
+                
+            
     )
 
 }

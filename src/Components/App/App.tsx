@@ -11,7 +11,7 @@ const App: React.FC = () => {
   return (
     <div className="App">
       <TopMenu setWords={setWords} />
-      <main>
+      <main style={{background: "lightblue"}}>
         <PuzzleArea words={words} setWords={setWords} />
       </main>
     </div>
