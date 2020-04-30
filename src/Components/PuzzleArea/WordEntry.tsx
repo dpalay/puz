@@ -1,6 +1,9 @@
 import React, { useState } from 'react'
 import { Word } from '../../Classes';
-import { Input, Form, FormProps } from 'semantic-ui-react';
+import { Input as SuiInput, Form as SuiForm, FormProps as SuiFormProps } from 'semantic-ui-react';
+import { Form, Input, Button, Tooltip } from 'antd';
+import { Store } from 'antd/lib/form/interface';
+import { QuestionCircleOutlined } from '@ant-design/icons';
 
 interface Iprops {
     words: Word[],
@@ -14,58 +17,44 @@ interface wordError {
     errored: boolean
 }
 
+
 const WordEntry: React.FC<Iprops> = (props: Iprops) => {
     const { words, setWords, setSelectedWord, minLength } = props
-    const [inputContent, setInputContent] = useState<string>("")
-    const [error, setError] = useState<wordError>({ errorText: "", errored: false })
+    const [form] = Form.useForm();
 
-    const handleSubmit = (event: React.FormEvent<HTMLFormElement>, data: FormProps) => {
-        let word = inputContent.trim().toUpperCase();
-        //validate content
-        if (word.length < minLength) {
-            setError({ errored: true, errorText: `Too short! Minimum length is ${minLength}` })
-        }
-        else if (word.match(/[^A-Z ]/g)) {
-            setError({ errored: true, errorText: `Can only contain letters A-Z and a space` })
-        }
-        else if (words.map(word => word.word).includes(word)) {
-            setError({ errored: true, errorText: `${word} is already included!` })
-        }
-        else {
-
-
-            //check for the word in words
-
-            // if it already exists, return error message
-
-            // if it doesn't, add it
-            setError({ errored: false, errorText: ``})
-            setWords([...words, new Word(inputContent.trim())].sort((a, b) => b.length - a.length))
-            setSelectedWord(null)
-            setInputContent("")
-        }
+    const onFinish = (values: Store) => {
+        let { word } = values
+        word = word.trim().toUpperCase();
+        setWords([...words, new Word(word)].sort((a, b) => b.length - a.length))
+        setSelectedWord(null)
+        form.setFieldsValue({ word: "" })
     }
-
 
     return (
         <div>
-            <Form onSubmit={handleSubmit}>
-                <Form.Field>
-                    <label>Enter {words.length > 0 ? "additional" : ""} words</label>
-                    <Input placeholder="Enter word"
-                        type=""
-                        value={inputContent}
-                        onChange={(e, data) => setInputContent(data.value)}
-                        action={{
-                            positive: true,
-                            content: "Submit",
-                        }}
-                        error={error.errored} />
-                </Form.Field>
+            <Form form={form} onFinish={onFinish}>
+                <Form.Item
+                    label={<span>
+                        Enter word&nbsp;
+                        <Tooltip title="Enter a word to add to the puzzle">
+                            <QuestionCircleOutlined />
+                        </Tooltip>
+                    </span>}
+                    validateTrigger="onSubmit"
+                    name="word"
+                    rules={
+                        [{ required: true, message: "Enter a word to add to the puzzle" },
+                        { min: 4, message: `Too short! Minimum length is ${minLength}` },
+                        { pattern: /^[A-Za-z][A-Za-z\s]*$/g, message: "Only A-Z or spaces allowed" },
+                        { validator: (rule, value) => words.map(wordInList => wordInList.word).includes(value.trim().toUpperCase()) ? Promise.reject(`${value.trim().toUpperCase()} is already included!`) : Promise.resolve() }
+                        ]}
+                >
+                    <Input />
+                </Form.Item>
+                <Form.Item>
+                    <Button type="primary" htmlType="submit">Submit</Button>
+                </Form.Item>
             </Form>
-            {error.errored && (<div className="ErrorFlash">
-                {error.errorText}
-            </div>)}
         </div>
     )
 }
