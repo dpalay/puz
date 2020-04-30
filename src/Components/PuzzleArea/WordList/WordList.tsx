@@ -1,6 +1,6 @@
 import React from 'react'
 import { List, Tooltip } from 'antd'
-import { Word } from '../../Classes';
+import { Word } from '../../../Classes';
 import { CloseCircleOutlined } from '@ant-design/icons';
 
 interface Iprops {

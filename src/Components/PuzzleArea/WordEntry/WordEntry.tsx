@@ -1,5 +1,5 @@
 import React from 'react'
-import { Word } from '../../Classes';
+import { Word } from '../../../Classes';
 import { Form, Input, Button, Tooltip } from 'antd';
 import { Store } from 'antd/lib/form/interface';
 import { QuestionCircleOutlined } from '@ant-design/icons';

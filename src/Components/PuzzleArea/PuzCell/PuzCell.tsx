@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Cell } from '../../Classes';
+import { Cell } from '../../../Classes';
 import { FireFilled } from '@ant-design/icons';
 
 interface Iprops {

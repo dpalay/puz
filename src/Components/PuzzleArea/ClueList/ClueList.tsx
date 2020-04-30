@@ -1,5 +1,5 @@
 import React from 'react'
-import {Word} from '../../Classes'
+import {Word} from '../../../Classes'
 
 interface Iprops {
     words: Word[]
