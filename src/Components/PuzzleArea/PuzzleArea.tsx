@@ -4,7 +4,7 @@ import WordList from './WordList/WordList';
 import WordEntry from './WordEntry/WordEntry';
 import PuzCell from './PuzCell/PuzCell';
 import ClueList from './ClueList/ClueList';
-import { Row, Col, Button } from 'antd'
+import { Row, Col, Button, Affix } from 'antd'
 import { useDropzone } from 'react-dropzone'
 import './PuzzleArea.css'
 
@@ -103,9 +103,11 @@ const PuzzleArea: React.FC<Iprops> = (props: Iprops) => {
                     </Row>
                 </Col>
                 <Col span={4} order={1} className={"no-print"}>
+                <Affix offsetTop={10}>
                     <Button onClick={() => setShowFill(!showFill)} type="primary" disabled={words.length === 0}>Toggle Filler</Button>
                     <WordEntry setWords={setWords} words={words} setSelectedWord={setSelectedWord} minLength={minLength} />
                     <WordList words={words} selectedWord={selectedWord} handleSelect={handleSelect} removeWord={removeWord} />
+                </Affix>
                 </Col>
             </Row>
         </div>
