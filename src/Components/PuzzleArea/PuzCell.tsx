@@ -12,6 +12,7 @@ interface Iprops {
 
 const PuzCell: React.FC<Iprops> = (props: Iprops) => {
     const [filledIn, setFilledIn] = useState<boolean>(false)
+    
     const {cell, showFill, cellsForWord} = props
     const computeStyle = (cell: { id: string }) => {
         if (cellsForWord.some(cellforword => cellforword.id === cell.id)) {
@@ -20,7 +21,7 @@ const PuzCell: React.FC<Iprops> = (props: Iprops) => {
         return filledIn ? {background: '#4477EE'} : { background: '#CCC' }
     }
     return (
-        <td style={computeStyle(cell)} key={cell.id} onClick={() => console.log(cell)}>
+        <td style={{cursor: "default", ...computeStyle(cell)}}  onClick={() => {setFilledIn(!filledIn);console.log(cell)}}>
             {cell.garbage ? (showFill ? cell.value : <FireFilled/>) : cell.value}
         </td>
     )

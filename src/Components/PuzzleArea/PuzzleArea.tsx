@@ -90,7 +90,7 @@ const PuzzleArea: React.FC<Iprops> = (props: Iprops) => {
                                     {puzzle.board.slice(1, puzzle.board.length - 1).map((row, i) => (
                                         <tr key={`row${i}`}>
                                             {row.slice(1, row.length - 1).map(cell => (
-                                                <PuzCell cell={cell} showFill={showFill} cellsForWord={cellsForWord} />
+                                                <PuzCell key={cell.id} cell={cell} showFill={showFill} cellsForWord={cellsForWord} />
                                             ))}
                                         </tr>
                                     ))}

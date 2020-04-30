@@ -37,7 +37,7 @@ const TopMenu: React.FC<Iprops> = (props: Iprops) => {
                     </SubMenu>
                 
                 <Menu.Item disabled style={{cursor: "default"}}>
-                    v.1.0.4
+                    v.1.0.5
                 </Menu.Item>
             </Menu>
         </header>
