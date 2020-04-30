@@ -1,6 +1,5 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { Word } from '../../Classes';
-import { Input as SuiInput, Form as SuiForm, FormProps as SuiFormProps } from 'semantic-ui-react';
 import { Form, Input, Button, Tooltip } from 'antd';
 import { Store } from 'antd/lib/form/interface';
 import { QuestionCircleOutlined } from '@ant-design/icons';
