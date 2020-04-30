@@ -1,9 +1,6 @@
 import React, { useState, useMemo } from 'react'
 import { Puzzle, Word } from '../../Classes'
-import WordList from './WordList/WordList';
-import WordEntry from './WordEntry/WordEntry';
-import PuzCell from './PuzCell/PuzCell';
-import ClueList from './ClueList/ClueList';
+import {PuzCell, WordEntry, WordList, ClueList} from './'
 import { Row, Col, Button, Affix } from 'antd'
 import { useDropzone } from 'react-dropzone'
 import './PuzzleArea.css'

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import './App.css';
 import TopMenu from '../TopMenu';
-import PuzzleArea from '../PuzzleArea';
+import {PuzzleArea} from '../PuzzleArea';
 import { Word } from '../../Classes';
 
 const App: React.FC = () => {
