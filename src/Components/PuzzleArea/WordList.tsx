@@ -1,5 +1,5 @@
 import React from 'react'
-import { List } from 'antd'
+import { List, Tooltip } from 'antd'
 import { Word } from '../../Classes';
 import { CloseCircleOutlined } from '@ant-design/icons';
 
@@ -21,13 +21,15 @@ const WordList: React.FC<Iprops> = (props: Iprops) => {
     }
 
     return (
-        <List size="small" dataSource={words} renderItem={word => (
+        <List size="small" dataSource={words} style={{maxHeight: "60vh", overflow:"auto", scrollBehavior: "smooth"}} renderItem={word => (
             <List.Item key={word.id} onClick={() => handleSelect(word)} style={{ cursor: "default", ...computeStyle(word) }} onContextMenu={(e: React.SyntheticEvent) => { e.preventDefault(); removeWord(word) }}>
-                <CloseCircleOutlined onClick={() => { removeWord(word) }} style={{ color: "red" }} />
+                <Tooltip title="Remove">
+                    <CloseCircleOutlined onClick={() => { removeWord(word) }} style={{ color: "red" }} />
+                </Tooltip>
                 {word.toString()}
             </List.Item>)} />
-                
-            
+
+
     )
 
 }
