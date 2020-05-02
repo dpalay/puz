@@ -21,7 +21,7 @@ const PuzCell: React.FC<Iprops> = (props: Iprops) => {
         return filledIn ? {background: '#4477EE'} : { background: '#CCC' }
     }
     return (
-        <td style={{cursor: "default", ...computeStyle(cell)}}  onClick={() => {setFilledIn(!filledIn);console.log(cell)}}>
+        <td style={{cursor: "default", fontSize:"medium", ...computeStyle(cell)}}  onClick={() => {setFilledIn(!filledIn);console.log(cell)}}>
             {cell.garbage ? (showFill ? cell.value : <FireFilled/>) : cell.value}
         </td>
     )

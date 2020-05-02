@@ -23,7 +23,7 @@ vertical-align: middle;
     border-left: 1px solid rgba(34,36,38,.1);
     border-top: 1px solid rgba(34,36,38,.1);
     text-align: center;
-    padding: .88571429em;
+    padding: .5em .7em;
 }
 
 .puzTable tr td:first-child{
