@@ -1,15 +1,14 @@
-import {Word, Cell } from "./";
-import {Direction} from '../Structures/'
-import {alpha} from '../Constants'
+import { Word, Cell } from "./";
+import { Direction } from "../Structures/";
+import { alpha } from "../Constants";
 
 class Puzzle {
-
-    cells(): Cell[] {
-        return this.board.flat(1)
-    }
+  cells(): Cell[] {
+    return this.board.flat(1);
+  }
 
   fillPuzzle() {
-    let cells = this.cells().filter((cell) => cell.garbage)
+    let cells = this.cells().filter((cell) => cell.garbage);
     cells.forEach((cell) => {
       cell.value = this.lettersUsed.charAt(
         Math.floor(Math.random() * this.lettersUsed.length)
@@ -40,27 +39,25 @@ class Puzzle {
   }
 
   surroundDash(): void {
-    //console.log("surrounding in dashes")
+    //console.log("surrounding in dashes"))
     for (let diag = 0; diag <= this.puzSize; diag++) {
       this.setCell("-", [diag, 0], false);
       this.setCell("-", [0, diag], false);
       this.setCell("-", [this.puzSize + 1, diag], false);
       this.setCell("-", [diag, this.puzSize + 1], false);
     }
-    
-    //console.log("putting in corner")
+    //console.log("putting in corner"))
     this.setCell("-", [this.puzSize + 1, this.puzSize + 1], false);
   }
 
   increasePuzzleSize(): void {
     this.puzSize++;
-    //console.log(`Puzzle is now [${this.puzSize}x${this.puzSize}]`)
-    if (!this.board[this.puzSize+1])
-    {
-      this.board[this.puzSize+1] = []
-      for (let i = 0; i<=this.puzSize+1; i++){
-        this.board[this.puzSize+1][i] = new Cell(" ",[this.puzSize+1,i])
-        this.board[i][this.puzSize+1] = new Cell(" ",[i,this.puzSize+1])
+    //console.log(`Puzzle is now [${this.puzSize}x${this.puzSize}]`))
+    if (!this.board[this.puzSize + 1]) {
+      this.board[this.puzSize + 1] = [];
+      for (let i = 0; i <= this.puzSize + 1; i++) {
+        this.board[this.puzSize + 1][i] = new Cell(" ", [this.puzSize + 1, i]);
+        this.board[i][this.puzSize + 1] = new Cell(" ", [i, this.puzSize + 1]);
       }
     }
     for (let j = 1; j <= this.puzSize; j++) {
@@ -68,23 +65,37 @@ class Puzzle {
       this.setCell(" ", [j, this.puzSize], true);
     }
     this.surroundDash();
+    // set this.justIncreased = true
   }
 
   addWord(newWord: Word, startingCell: Cell, direction: Direction) {
+    /*console.log(
+      `Adding ${newWord.word} @ [row,col]:${startingCell
+        .pos()
+        .join(", ")} going ${Direction[direction]}`
+    );*/
     this.directionUsage[direction]++;
     let curCell = startingCell;
+    //console.log(`For each letter in ${newWord.word}:`));
     newWord.word.split("").forEach((letter) => {
       if (letter !== " ") {
+        //console.log(`${letter} is not " "`));
         if (curCell.value === " ") {
+          //console.log(`Current Cell @ ${curCell.pos()} is blank.  adding ${letter}`);
           this.setCell(letter, curCell.pos());
           curCell.words = [newWord, ...curCell.words];
           curCell.garbage = false;
           this.cellsWithLetter[this.alphabet.indexOf(letter)].unshift(curCell);
-        }
-        else{
+          //console.log(`currentCell:`));
+          //console.log(curCell));
+        } else {
+          //console.log(`Current Cell @ ${curCell.pos()} is ${curCell.value}. new letter is ${letter}`);
           curCell.words = [newWord, ...curCell.words];
+          //console.log(`currentCell:`));
+          //console.log(curCell));
         }
       }
+      //console.log(`Moving ${Direction[direction]}`));
       switch (direction) {
         case Direction.up:
           curCell = this.getCell(curCell.move(Direction.up));
@@ -124,13 +135,19 @@ class Puzzle {
     let lowFreqDirectionCount = Math.min(...this.directionUsage.slice(1));
     let numFound = 0;
     let smallestDirectionUseFound = Infinity;
+    //console.log(`trying to find a space to fit ${newWord.word}`));
     //loop through the board
     //TODO:  make it randomized so that it is less predictable where it puts the word
+    // Check for this.justIncreased.  if true, only test the new edge
     for (let row of this.board.slice(1, this.puzSize + 1)) {
+      //console.log(`moving to next row`))
       for (let cell of row.slice(1, this.puzSize + 1)) {
+        //console.log(`moving to cell [${cell.row},${cell.col}]`))
         // if the cell is blank, we have a starting spot to check to see if we can fit the word
         if (cell.value === " ") {
+          //console.log(`Cell [${cell.row},${cell.col}] is blank. Test each of the 4 directions`))
           for (let direction = 1; direction <= 4; direction++) {
+            //console.log(Direction[direction]))
             let dx = Puzzle.dx[direction];
             let dy = Puzzle.dy[direction];
             let emptyCount = 1;
@@ -138,29 +155,38 @@ class Puzzle {
               cell.row + emptyCount * dy,
               cell.col + emptyCount * dx,
             ]);
+            //console.log(`Testing Cell [${testCell.pos().join(",")}] which has value ${testCell.value}`))
             while (emptyCount < newWord.length && testCell.value === " ") {
               emptyCount++;
+              //console.log(`cell is empty.  Emptycount=${emptyCount}`))
+              //console.log(`Testing Cell [${testCell.pos().join(",")}] which has value ${testCell.value}`))
               testCell = this.getCell([
                 cell.row + emptyCount * dy,
                 cell.col + emptyCount * dx,
               ]);
             }
             numFound++;
+            //console.log(`${Direction[direction]} works. # of found positions: ${numFound}`))
+            //console.table({emptyCount, length: newWord.length})
             if (emptyCount === newWord.length) {
+              //console.log(`${newWord.word} fits! result.found=true`))
               result.found = true;
               if (this.directionUsage[direction] === lowFreqDirectionCount) {
+                //console.log("Minimum usage direction"))
                 numFound = 1;
                 return { found: true, cell, direction };
               } else if (
                 this.directionUsage[direction + 4] === lowFreqDirectionCount
               ) {
+                //console.log("Minimum usage direction (reverse order)"))
+                //console.log(`setting ${newWord.word} @ [${cell.row + (newWord.length - 1) * dy},${cell.col + (newWord.length - 1) * dx}] going ${Direction[direction]}`))
                 numFound = 1;
                 return {
                   found: true,
                   direction: direction + 4,
                   cell: this.getCell([
                     cell.row + (newWord.length - 1) * dy,
-                    cell.col + (newWord.length - 1) * dy,
+                    cell.col + (newWord.length - 1) * dx,
                   ]),
                 };
               } else {
@@ -227,16 +253,27 @@ class Puzzle {
     let { length, word } = newWord;
     let bestOverlap = 0;
     let numEquals = 0;
+    //console.log(`trying to find an overlap for ${word}`));
     word.split("").forEach((letter, index) => {
       if (letter !== " ") {
         let lettersBefore = index;
         let lettersAfter = length - index - 1;
-
+        /*console.log(
+          `in ${word}, "${letter}" is the ${
+            index + 1
+          } letter.  There are ${lettersBefore} letters before and ${lettersAfter} after`
+        );*/
         //Find all the cells that have this letter
         let cells = [...this.cellsWithLetter[this.alphabet.indexOf(letter)]];
+        //console.log(`All the cells with this letter:`));
+        /*console.log(
+          `${cells.map((cell) => `[${cell.pos().join(", ")}]`).join(" ")}`
+        );*/
         while (cells.length > 0) {
           let tmpCell: Cell = cells.shift() as Cell;
+          //console.log(`Checking ${`[${tmpCell.pos().join(", ")}]`}`));
           for (let direction = 1; direction <= 8; direction++) {
+            //console.log(`in direction ${Direction[direction]}`));
             let [row, col] = tmpCell.pos();
             let dx = Puzzle.dx[direction];
             let dy = Puzzle.dy[direction];
@@ -244,6 +281,7 @@ class Puzzle {
             let startRow = row - dy * lettersBefore;
             let endCol = col + dx * lettersAfter;
             let endRow = row + dy * lettersAfter;
+            //console.table({dx, dy, startCol, startRow, endCol, endRow});
 
             if (
               startCol > 0 &&
@@ -255,6 +293,8 @@ class Puzzle {
               endCol <= this.puzSize &&
               endRow <= this.puzSize
             ) {
+              //console.log(`${word} is in bounds starting at [${startRow},${startCol}] in ${Direction[direction]}`))
+              //console.log(`Checking to see how good a position this is`))
               let curOverlap = 0;
               let fits = true;
               word.split("").forEach((letter, index) => {
@@ -263,20 +303,27 @@ class Puzzle {
                   (letter === " " ||
                     this.getCell([startRow + index * dy, startCol + index * dx])
                       .value === " ")
-                ) {
-                } else if (
+                ) {} 
+                else if (
                   letter ===
                   this.getCell([startRow + index * dy, startCol + index * dx])
                     .value
                 ) {
+                  //console.log(`"${letter}" overlaps at [${startRow + index * dy}, ${startCol + index * dx}]`))
                   curOverlap++;
                 } else {
                   fits = false;
+                  //console.log("Overlap with a different letter, setting fits=false"))
                   // TODO: efficiency improvement.  It could stop checking at this point
                 }
               });
+              //console.log(`${curOverlap} overlaps`))
               if (fits) {
+                //console.log("We found a place for it to overlap"));
+                //console.log(`numEquals: ${numEquals}`));
+                //console.log(`best overlap so far: ${bestOverlap}`))
                 if (curOverlap > bestOverlap) {
+                  //console.log(`This is the new best overlap, so set it`));
                   bestOverlap = curOverlap;
                   result = {
                     found: true,
@@ -289,6 +336,7 @@ class Puzzle {
                   this.directionUsage[direction] <
                     this.directionUsage[result.direction]
                 ) {
+                  //console.log(`equal to the best overlap, but in a direction less frequently used.  set it.`))
                   result = {
                     found: true,
                     cell: this.getCell([startRow, startCol]),
@@ -300,8 +348,10 @@ class Puzzle {
                   this.directionUsage[direction] ===
                     this.directionUsage[result.direction]
                 ) {
+                  //console.log(`equal to the best overlap, equal in highest direction.  we have a 1/${numEquals} chance to set it to this new one.`))
                   numEquals++;
                   if (Math.random() <= 1.0 / numEquals) {
+                    //console.log(`it's a hit! updating result to be [${startRow}, ${startCol}]`))
                     result = {
                       found: true,
                       cell: this.getCell([startRow, startCol]),
@@ -309,8 +359,11 @@ class Puzzle {
                     };
                   }
                 } else {
+                  //console.log(`Missed out the random chance.`))
                 }
               }
+            }
+            else { //console.log("doesn't fit, out of bounds"))
             }
           }
         }
@@ -336,7 +389,7 @@ class Puzzle {
   cellsWithLetter: Cell[][];
 
   constructor(words: Word[], minWordSize: number, alphabet?: string) {
-    this.alphabet = alphabet || alpha || Puzzle.defaultAlphabet
+    this.alphabet = alphabet || alpha || Puzzle.defaultAlphabet;
     this.minWordSize = minWordSize;
     this.board = [];
     this.cellsWithLetter = this.alphabet.split("").map((x) => []);
@@ -381,39 +434,39 @@ class Puzzle {
     this.words
       .sort((a, b) => b.length - a.length)
       .forEach((word) => {
-        //console.log(`starting with new word: ${word.word}`)
+        //console.log(`starting with new word: ${word.word}`))
         //this.print()
         wordsInPuzzle++;
-        
+
         // 1st word is special case
         if (wordsInPuzzle === 1) {
-          //console.log("adding first word on the diagonal")
+          //console.log("adding first word on the diagonal"))
           this.addWord(word, this.getCell([this.puzSize, this.puzSize]), 7);
         } else {
           // try an overlap
-          //console.log(`Can ${word.word} overlap?`)
+          //console.log(`Can ${word.word} overlap?`))
           let { found, cell, direction } = this.overlap(word);
           if (found && cell && direction) {
-            //console.log(`Yes!  Adding ${word.word} @ row:${cell.row} and col:${cell.col} heading in ${Direction[direction]}`)
+            //console.log(`Yes!  Adding ${word.word} @ row:${cell.row} and col:${cell.col} heading in ${Direction[direction]}`))
             this.addWord(word, cell, direction);
           } else {
-            //console.log(`No. Can ${word.word} fit?`)
+            //console.log(`No. Can ${word.word} fit?`))
             let { found, cell, direction } = this.insertWord(word);
             if (found && cell && direction) {
-              //console.log(`Yes!  Adding ${word.word} @ row:${cell.row} and col:${cell.col} heading in ${Direction[direction]}`)
+              //console.log(`Yes!  Adding ${word.word} @ row:${cell.row} and col:${cell.col} heading in ${Direction[direction]}`))
               this.addWord(word, cell, direction);
             } else {
-              //console.log(`No. Increasing puzzle size`)
+              //console.log(`No. Increasing puzzle size`))
               this.increasePuzzleSize();
-              //console.log(`Can ${word.word} overlap?`)
+              //console.log(`Can ${word.word} overlap?`))
               let { found, cell, direction } = this.overlap(word);
               if (found && cell && direction) {
-                //console.log(`Yes!  Adding ${word.word} @ row:${cell.row} and col:${cell.col} heading in ${Direction[direction]}`)
+                //console.log(`Yes!  Adding ${word.word} @ row:${cell.row} and col:${cell.col} heading in ${Direction[direction]}`))
                 this.addWord(word, cell, direction);
               } else {
                 let { found, cell, direction } = this.insertWord(word);
                 if (found && cell && direction) {
-                  //console.log(`Yes!  Adding ${word.word} @ row:${cell.row} and col:${cell.col} heading in ${Direction[direction]}`)
+                  //console.log(`Yes!  Adding ${word.word} @ row:${cell.row} and col:${cell.col} heading in ${Direction[direction]}`))
                   this.addWord(word, cell, direction);
                 }
               }
