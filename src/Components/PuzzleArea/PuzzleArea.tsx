@@ -5,6 +5,7 @@ import { Row, Col, Button, Affix } from 'antd'
 import { useDropzone } from 'react-dropzone'
 import usePromise from 'react-use-promise'
 import './PuzzleArea.css'
+import DebugPuz from '../../Classes/debugPuz'
 
 
 
