@@ -1,3 +1,5 @@
-Icon {
-    
+.word_list {
+  max-height: 60vh;
+  overflow: auto;
+  scroll-behavior: smooth;
 }

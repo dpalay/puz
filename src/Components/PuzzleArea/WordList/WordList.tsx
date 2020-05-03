@@ -2,29 +2,37 @@ import React from 'react'
 import { List, Tooltip } from 'antd'
 import { Word } from '../../../Classes';
 import { CloseCircleOutlined } from '@ant-design/icons';
+import './WordList.css'
 
 interface Iprops {
-    handleSelect: (word: Word) => void
     words: Word[]
-    removeWord: (word: Word) => void
     selectedWord: Word | null
+    setWords: React.Dispatch<React.SetStateAction<Word[]>>
+    setSelectedWord: React.Dispatch<React.SetStateAction<Word | null>>
 }
 
 
 
 const WordList: React.FC<Iprops> = (props: Iprops) => {
-    const { words, handleSelect, removeWord, selectedWord } = props
+    const { words, setSelectedWord,  selectedWord, setWords } = props
     const computeStyle = (word: Word) => {
         if (word === selectedWord) {
             return { background: "green" }
         }
     }
+    const removeWord = (wordToRemove: Word) => {
+        setWords(words.filter(word => word !== wordToRemove))
+    }
+    const handleSelect = (wordToSelect: Word) => {
+        if (selectedWord === wordToSelect) { setSelectedWord(null) }
+        else { setSelectedWord(wordToSelect) }
+    }
 
     return (
-        <List size="small" dataSource={words} style={{maxHeight: "60vh", overflow:"auto", scrollBehavior: "smooth"}} renderItem={word => (
+        <List className="word_list" size="small" dataSource={words} renderItem={word => (
             <List.Item key={word.id} onClick={() => handleSelect(word)} style={{ cursor: "default", ...computeStyle(word) }} onContextMenu={(e: React.SyntheticEvent) => { e.preventDefault(); removeWord(word) }}>
                 <Tooltip title="Remove">
-                    <CloseCircleOutlined onClick={() => { removeWord(word) }} style={{ color: "red" }} />
+                    <CloseCircleOutlined onClick={() => removeWord(word) } style={{ color: "red" }} />
                 </Tooltip>
                 {word.toString()}
             </List.Item>)} />
