@@ -389,6 +389,7 @@ class Puzzle {
   cellsWithLetter: Cell[][];
 
   constructor(words: Word[], minWordSize: number, alphabet?: string) {
+    console.log(`new Puzzle with ${words.length} words`)
     this.alphabet = alphabet || alpha || Puzzle.defaultAlphabet;
     this.minWordSize = minWordSize;
     this.board = [];
@@ -475,6 +476,7 @@ class Puzzle {
         }
       });
     this.fillPuzzle();
+    console.log("done building puzzle")
   }
 }
 

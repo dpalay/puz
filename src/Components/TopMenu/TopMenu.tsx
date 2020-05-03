@@ -16,12 +16,10 @@ const TopMenu: React.FC<Iprops> = (props: Iprops) => {
     return (
         <header className={"no-print"}>
             <Menu mode="horizontal"  style={{background: "lightblue"}}>
-                <Menu.Item key='new_puzzle' onClick={() => setWords([])}>
+                <Menu.Item key='new_puzzle' onClick={() => {setWords([]); console.log("New Puzzle")}}>
                 <PlusCircleTwoTone />
                     New Puzzle
                 </Menu.Item>
-                
-
                     <SubMenu title="Use Premade Puzzle">
                         <Menu>
                             {puzzles.map((puzzle,i )=> (

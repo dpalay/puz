@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useCallback } from 'react'
+import React, { useState } from 'react'
 import { Puzzle, Word } from '../../Classes'
 import {PuzCell, WordEntry, WordList, ClueList} from './'
 import { Row, Col, Button, Affix } from 'antd'
@@ -17,12 +17,16 @@ interface Iprops {
 
 const PuzzleArea: React.FC<Iprops> = (props: Iprops) => {
     const { words, setWords } = props;
-    const newPuz = useCallback((words,minLength) => new Puzzle(words,minLength),[words])
     const minLength = 4
     const [showFill, setShowFill] = useState<boolean>(true)
     const [selectedWord, setSelectedWord] = useState<Word | null>(null)
-    //const puzzle = useMemo(() => new Puzzle(words, 4), [words])
-    const [puzzle, error, status] = usePromise<Puzzle>(new Promise((res,rej) => {res(newPuz(words,minLength))}))
+    const newPuz = (words: Word[]): Promise<Puzzle> => new Promise<Puzzle>((res,rej) => {
+        let puz = new Puzzle(words,minLength)
+        res(puz);
+    })
+
+    const [puzzle, , status] = usePromise<Puzzle>(newPuz(words),[words])
+
     const addWord = (word: Word | string | Word[]) => {
         if (typeof word === 'string') {
             setWords([...words, new Word(word)].sort((a, b) => b.length - a.length))
@@ -68,8 +72,8 @@ const PuzzleArea: React.FC<Iprops> = (props: Iprops) => {
     const { getRootProps, getInputProps } = useDropzone({ onDrop, noClick: true, noKeyboard: true })
 
     const cellsForWord = puzzle ? puzzle.cells().filter(cell => { if (selectedWord) { return cell.words.includes(selectedWord) } else return false }) : []
-console.log(status)
-    return (
+    console.log(status)
+    return ( status === "resolved" ? (
         <div {...getRootProps()} >
             <input {...getInputProps()} />
             <Row  gutter={16} >
@@ -97,11 +101,12 @@ console.log(status)
                 <Affix offsetTop={10}>
                     <Button onClick={() => setShowFill(!showFill)} type="primary" disabled={words.length === 0}>Toggle Filler</Button>
                     <WordEntry setWords={setWords} words={words} setSelectedWord={setSelectedWord} minLength={minLength} />
-                    <WordList words={words} selectedWord={selectedWord} handleSelect={handleSelect} removeWord={removeWord} />
+                    <WordList setWords={setWords} words={words} selectedWord={selectedWord} setSelectedWord={setSelectedWord}  />
                 </Affix>
                 </Col>
             </Row>
-        </div>
+        </div>) : 
+        <div>Loading!</div>
     )
 
 }
