@@ -24,7 +24,7 @@ const WordEntry: React.FC<Iprops> = (props: Iprops) => {
     const onFinish = (values: Store) => {
         let { word } = values
         word = word.trim().toUpperCase();
-        setWords([...words, new Word(word)].sort((a, b) => b.length - a.length))
+        setWords([...words, new Word(word)].sort())
         setSelectedWord(null)
         form.setFieldsValue({ word: "" })
     }

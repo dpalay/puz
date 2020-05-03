@@ -34,7 +34,7 @@ const WordList: React.FC<Iprops> = (props: Iprops) => {
                 <Tooltip title="Remove">
                     <CloseCircleOutlined onClick={() => removeWord(word) } style={{ color: "red" }} />
                 </Tooltip>
-                {word.toString()}
+                {word.word}
             </List.Item>)} />
 
 
