@@ -1,8 +1,9 @@
-import React, { useState, useMemo } from 'react'
+import React, { useState, useMemo, useCallback } from 'react'
 import { Puzzle, Word } from '../../Classes'
 import {PuzCell, WordEntry, WordList, ClueList} from './'
 import { Row, Col, Button, Affix } from 'antd'
 import { useDropzone } from 'react-dropzone'
+import usePromise from 'react-use-promise'
 import './PuzzleArea.css'
 
 
@@ -15,10 +16,12 @@ interface Iprops {
 
 const PuzzleArea: React.FC<Iprops> = (props: Iprops) => {
     const { words, setWords } = props;
+    const newPuz = useCallback((words,minLength) => new Puzzle(words,minLength),[words])
     const minLength = 4
     const [showFill, setShowFill] = useState<boolean>(true)
     const [selectedWord, setSelectedWord] = useState<Word | null>(null)
-    const puzzle = useMemo(() => new Puzzle(words, 4), [words])
+    //const puzzle = useMemo(() => new Puzzle(words, 4), [words])
+    const [puzzle, error, status] = usePromise<Puzzle>(new Promise((res,rej) => {res(newPuz(words,minLength))}))
     const addWord = (word: Word | string | Word[]) => {
         if (typeof word === 'string') {
             setWords([...words, new Word(word)].sort((a, b) => b.length - a.length))
@@ -73,8 +76,8 @@ const PuzzleArea: React.FC<Iprops> = (props: Iprops) => {
     }
 
 
-    const cellsForWord = puzzle.cells().filter(cell => { if (selectedWord) { return cell.words.includes(selectedWord) } else return false })
-
+    const cellsForWord = puzzle ? puzzle.cells().filter(cell => { if (selectedWord) { return cell.words.includes(selectedWord) } else return false }) : []
+console.log(status)
     return (
         <div {...getRootProps()} >
             <input {...getInputProps()} />
@@ -84,7 +87,7 @@ const PuzzleArea: React.FC<Iprops> = (props: Iprops) => {
                         {words.length > 0 ? (
                             <table className="puzTable">
                                 <tbody>
-                                    {puzzle.board.slice(1, puzzle.board.length - 1).map((row, i) => (
+                                    {puzzle?.board.slice(1, puzzle.board.length - 1).map((row, i) => (
                                         <tr key={`row${i}`}>
                                             {row.slice(1, row.length - 1).map(cell => (
                                                 <PuzCell key={cell.id} cell={cell} showFill={showFill} cellsForWord={cellsForWord} />
