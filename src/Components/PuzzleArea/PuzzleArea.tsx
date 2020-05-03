@@ -66,16 +66,6 @@ const PuzzleArea: React.FC<Iprops> = (props: Iprops) => {
 
     const { getRootProps, getInputProps } = useDropzone({ onDrop, noClick: true, noKeyboard: true })
 
-    const removeWord = (wordToRemove: Word) => {
-        setWords(words.filter(word => word !== wordToRemove))
-    }
-
-    const handleSelect = (wordToSelect: Word) => {
-        if (selectedWord === wordToSelect) { setSelectedWord(null) }
-        else { setSelectedWord(wordToSelect) }
-    }
-
-
     const cellsForWord = puzzle ? puzzle.cells().filter(cell => { if (selectedWord) { return cell.words.includes(selectedWord) } else return false }) : []
 console.log(status)
     return (
