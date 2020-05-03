@@ -27,7 +27,7 @@ const TopMenu: React.FC<Iprops> = (props: Iprops) => {
                             {puzzles.map((puzzle,i )=> (
                                 <Menu.Item
                                     key={`premade_${i}`}
-                                    onClick={() => setWords(puzzle.words.map(word => new Word(word)).sort((a, b) => b.length - a.length))}
+                                    onClick={() => setWords(puzzle.words.map(word => new Word(word)).sort())}
                                 >
                                     {puzzle.name}
                                 </Menu.Item>
