@@ -2,16 +2,17 @@ import React from 'react'
 import { puzzles } from '../../Constants'
 import { Word } from '../../Classes';
 import {Menu} from 'antd'
-import { PlusCircleTwoTone} from '@ant-design/icons'
+import { PlusCircleTwoTone, PrinterFilled} from '@ant-design/icons'
 
 interface Iprops {
     setWords: React.Dispatch<React.SetStateAction<Word[]>>
+    hasWords: boolean
 }
 
 
 
 const TopMenu: React.FC<Iprops> = (props: Iprops) => {
-    const { setWords } = props;
+    const { setWords, hasWords } = props;
     const {SubMenu} = Menu;
     return (
         <header className={"no-print"}>
@@ -35,9 +36,12 @@ const TopMenu: React.FC<Iprops> = (props: Iprops) => {
                             )}
                         </Menu>
                     </SubMenu>
-                
+                <Menu.Item disabled={!hasWords} onClick={() => window.print()}>
+                    <PrinterFilled/>
+                    Print Puzzle
+                </Menu.Item>
                 <Menu.Item disabled style={{cursor: "default"}}>
-                    v.1.0.5
+                    v.1.1.0
                 </Menu.Item>
             </Menu>
         </header>
