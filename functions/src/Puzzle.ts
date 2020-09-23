@@ -143,7 +143,7 @@ class Puzzle {
               cell.col + emptyCount * dx,
             ]);
             //console.log(`Testing Cell [${testCell.pos().join(",")}] which has value ${testCell.value}`))
-            while (emptyCount < newWord.length && testCell.value === " ") {
+            while (emptyCount < newWord.word.length && testCell.value === " ") {
               emptyCount++;
               //console.log(`cell is empty.  Emptycount=${emptyCount}`))
               //console.log(`Testing Cell [${testCell.pos().join(",")}] which has value ${testCell.value}`))
@@ -155,7 +155,7 @@ class Puzzle {
             numFound++;
             //console.log(`${Direction[direction]} works. # of found positions: ${numFound}`))
             //console.table({emptyCount, length: newWord.length})
-            if (emptyCount === newWord.length) {
+            if (emptyCount === newWord.word.length) {
               //console.log(`${newWord.word} fits! result.found=true`))
               result.found = true;
               if (this.directionUsage[direction] === lowFreqDirectionCount) {
@@ -172,8 +172,8 @@ class Puzzle {
                   found: true,
                   direction: direction + 4,
                   cell: this.getCell([
-                    cell.row + (newWord.length - 1) * dy,
-                    cell.col + (newWord.length - 1) * dx,
+                    cell.row + (newWord.word.length - 1) * dy,
+                    cell.col + (newWord.word.length - 1) * dx,
                   ]),
                 };
               } else {
@@ -193,8 +193,8 @@ class Puzzle {
                     found: true,
                     direction: direction + 4,
                     cell: this.getCell([
-                      cell.row + (newWord.length - 1) * dy,
-                      cell.col + (newWord.length - 1) * dy,
+                      cell.row + (newWord.word.length - 1) * dy,
+                      cell.col + (newWord.word.length - 1) * dy,
                     ]),
                   };
                   numFound = 1;
@@ -213,8 +213,8 @@ class Puzzle {
                     if (Math.random() <= 1.0 / numFound) {
                       result = {
                         cell: this.getCell([
-                          cell.row + (newWord.length - 1) * dy,
-                          cell.col + (newWord.length - 1) * dy,
+                          cell.row + (newWord.word.length - 1) * dy,
+                          cell.col + (newWord.word.length - 1) * dy,
                         ]),
                         //@ts-ignore
                         direction: direction + 4,
@@ -239,14 +239,14 @@ class Puzzle {
       found: false,
       direction: 0,
     };
-    let { length, word } = newWord;
+    let { word } = newWord;
     let bestOverlap = 0;
     let numEquals = 0;
     //console.log(`trying to find an overlap for ${word}`));
     word.split("").forEach((letter, index) => {
       if (letter !== " ") {
         let lettersBefore = index;
-        let lettersAfter = length - index - 1;
+        let lettersAfter = word.length - index - 1;
         /*console.log(
           `in ${word}, "${letter}" is the ${
             index + 1
@@ -388,12 +388,12 @@ class Puzzle {
     this.lettersUsed = "";
     this.numWords = words.length;
     this.numLetters = 0;
-    this.maxWordLength = Math.max(...words.map((word) => word.length));
+    this.maxWordLength = Math.max(...words.map((word) => word.word.length));
     this.directionUsage = [0, 0, 0, 0, 0, 0, 0, 0, 0];
 
     // Go through the list of words
     this.lettersUsed = words
-      .map((word) => word)
+      .map((word) => word.word)
       .join("")
       .split(" ")
       .join("");
@@ -419,7 +419,7 @@ class Puzzle {
 
     let wordsInPuzzle = 0;
     this.words
-      .sort((a, b) => b.length - a.length)
+      .sort((a, b) => b.word.length - a.word.length)
       .forEach((word) => {
         //console.log(`starting with new word: ${word.word}`))
         //this.print()
