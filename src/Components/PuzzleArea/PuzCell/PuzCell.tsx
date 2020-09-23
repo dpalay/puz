@@ -17,7 +17,16 @@ const PuzCell: React.FC<Iprops> = (props: Iprops) => {
         if (cellsForWord.some(cellforword => cellforword.id === cell.id)) {
             return { background: '#E60' }
         }
-        return filledIn ? (cell.garbage ? {background: '#ef4646'} : {background: '#4477EE'}) : { background: '#CCC' }
+        if (filledIn){
+            if (cell.garbage) {
+                return  {background: '#ef4646'} // red
+            }
+            else //not garbage
+            {
+                return {background: '#4477EE'} // blue
+            }
+        }
+        return { background: '#CCC' }
     }
     return (
         <td style={{cursor: "default", fontSize:"medium", ...computeStyle(cell)}}  onClick={() => {setFilledIn(!filledIn)}}>
