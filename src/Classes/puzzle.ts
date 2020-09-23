@@ -18,32 +18,32 @@ class Puzzle {
   lettersUsed: string;
   board: Cell[][];
   cellsWithLetter: {
-    a: Position[];
-    b: Position[];
-    c: Position[];
-    d: Position[];
-    e: Position[];
-    f: Position[];
-    g: Position[];
-    h: Position[];
-    i: Position[];
-    j: Position[];
-    k: Position[];
-    l: Position[];
-    m: Position[];
-    n: Position[];
-    o: Position[];
-    p: Position[];
-    q: Position[];
-    r: Position[];
-    s: Position[];
-    t: Position[];
-    u: Position[];
-    v: Position[];
-    w: Position[];
-    x: Position[];
-    y: Position[];
-    z: Position[];
+    A: Position[];
+    B: Position[];
+    C: Position[];
+    D: Position[];
+    E: Position[];
+    F: Position[];
+    G: Position[];
+    H: Position[];
+    I: Position[];
+    J: Position[];
+    K: Position[];
+    L: Position[];
+    M: Position[];
+    N: Position[];
+    O: Position[];
+    P: Position[];
+    Q: Position[];
+    R: Position[];
+    S: Position[];
+    T: Position[];
+    U: Position[];
+    V: Position[];
+    W: Position[];
+    X: Position[];
+    Y: Position[];
+    Z: Position[];
   };
 
   constructor(
@@ -67,32 +67,32 @@ class Puzzle {
     );
     this.lettersUsed = letterList;
     this.cellsWithLetter = {
-      a: [],
-      b: [],
-      c: [],
-      d: [],
-      e: [],
-      f: [],
-      g: [],
-      h: [],
-      i: [],
-      j: [],
-      k: [],
-      l: [],
-      m: [],
-      n: [],
-      o: [],
-      p: [],
-      q: [],
-      r: [],
-      s: [],
-      t: [],
-      u: [],
-      v: [],
-      w: [],
-      x: [],
-      y: [],
-      z: [],
+      A: [],
+      B: [],
+      C: [],
+      D: [],
+      E: [],
+      F: [],
+      G: [],
+      H: [],
+      I: [],
+      J: [],
+      K: [],
+      L: [],
+      M: [],
+      N: [],
+      O: [],
+      P: [],
+      Q: [],
+      R: [],
+      S: [],
+      T: [],
+      U: [],
+      V: [],
+      W: [],
+      X: [],
+      Y: [],
+      Z: [],
     };
     basis.forEach((r, row) => {
       r.forEach((c, col) => {
