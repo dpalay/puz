@@ -13,11 +13,11 @@ const PuzCell: React.FC<Iprops> = (props: Iprops) => {
     const [filledIn, setFilledIn] = useState<boolean>(false)
     
     const {cell, showFill, cellsForWord} = props
-    const computeStyle = (cell: { id: string }) => {
+    const computeStyle = (cell: Cell) => {
         if (cellsForWord.some(cellforword => cellforword.id === cell.id)) {
             return { background: '#E60' }
         }
-        return filledIn ? {background: '#4477EE'} : { background: '#CCC' }
+        return filledIn ? (cell.garbage ? {background: '#ef4646'} : {background: '#4477EE'}) : { background: '#CCC' }
     }
     return (
         <td style={{cursor: "default", fontSize:"medium", ...computeStyle(cell)}}  onClick={() => {setFilledIn(!filledIn)}}>
