@@ -1,22 +1,40 @@
-import * as functions from 'firebase-functions';
-import Puzzle from './Puzzle';
-import Word from './Word'
+import * as functions from "firebase-functions";
+import * as cors from "cors";
+import Puzzle from "./Puzzle";
+import Word from "./Word";
+import ReturnData from "./returnData";
 
-// // Start writing Firebase Functions
-// // https://firebase.google.com/docs/functions/typescript
-//
-// export const helloWorld = functions.https.onRequest((request, response) => {
-//   functions.logger.info("Hello logs!", {structuredData: true});
-//   response.send("Hello from Firebase!");
-// });
 
-export const makePuzzle = functions.https.onRequest((request, response) => {
+const  corsHandler = cors({origin: true})
 
-functions.logger.info("Puzzle creation!", request.body.wordList)
 
-let wordList: string[] = request.body.wordList
-wordList = wordList.map((word) => word.toUpperCase())
-let puzzle = new Puzzle(wordList.map((word) => new Word(word)),3)
+export const makePuzzle = functions.https.onRequest( 
+  (request, response: functions.Response<ReturnData>) => {
+    corsHandler(request, response, () => {
+      functions.logger.info("Puzzle creation!", request.body.wordList);
+      let wordList: Word[] = request.body.wordList || [];
 
-response.send(puzzle.board.map(row => row.map(cell => {return {value: cell.value, words: cell.words}})))
-})
+      functions.logger.info("wordList", wordList);
+      //TODO:  Validate word list, reply with error if not proper
+
+      if (wordList.length === 0) {
+        response.send({ status: "empty" });
+      } else {
+        wordList = wordList.map((word) => {
+          return { ...word, word: word.word.toUpperCase() };
+        });
+        functions.logger.info("wordList after map", wordList);
+        let puzzle = new Puzzle(wordList, 3);
+        response.send({
+          puzzle: puzzle.board.map((row) =>
+            row.map((cell) => {
+              return { value: cell.value, words: cell.words };
+            })
+          ),
+          lettersUsed: puzzle.lettersUsed,
+          status: "success",
+        });
+      }
+    });
+  }
+);
