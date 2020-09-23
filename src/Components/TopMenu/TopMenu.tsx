@@ -41,7 +41,7 @@ const TopMenu: React.FC<Iprops> = (props: Iprops) => {
                     Print Puzzle
                 </Menu.Item>
                 <Menu.Item disabled style={{cursor: "default"}}>
-                    v.1.1.0
+                    v.1.2.0
                 </Menu.Item>
             </Menu>
         </header>

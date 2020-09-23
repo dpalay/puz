@@ -1,6 +1,5 @@
 import React, { useState } from 'react'
 import { Cell } from '../../../Classes';
-import { FireFilled } from '@ant-design/icons';
 
 interface Iprops {
     cell: Cell
@@ -21,8 +20,8 @@ const PuzCell: React.FC<Iprops> = (props: Iprops) => {
         return filledIn ? {background: '#4477EE'} : { background: '#CCC' }
     }
     return (
-        <td style={{cursor: "default", fontSize:"medium", ...computeStyle(cell)}}  onClick={() => {setFilledIn(!filledIn);console.log(cell)}}>
-            {cell.garbage ? (showFill ? cell.value : <FireFilled/>) : cell.value}
+        <td style={{cursor: "default", fontSize:"medium", ...computeStyle(cell)}}  onClick={() => {setFilledIn(!filledIn)}}>
+            {cell.garbage ? (showFill ? cell.value : " ") : cell.value}
         </td>
     )
 
