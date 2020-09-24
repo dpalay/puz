@@ -3,16 +3,19 @@ import { puzzles } from '../../Constants'
 import { Word } from '../../Classes';
 import {Menu} from 'antd'
 import { PlusCircleTwoTone, PrinterFilled} from '@ant-design/icons'
+import {useRecoilState} from 'recoil'
+import {wordList} from '../../Recoil'
 
 interface Iprops {
-    setWords: React.Dispatch<React.SetStateAction<Word[]>>
     hasWords: boolean
 }
 
 
 
 const TopMenu: React.FC<Iprops> = (props: Iprops) => {
-    const { setWords, hasWords } = props;
+    
+  const [, setWords] = useRecoilState(wordList)
+    const { hasWords } = props;
     const {SubMenu} = Menu;
     return (
         <header className={"no-print"}>

@@ -12,7 +12,7 @@ const App: React.FC = () => {
   return (
     <RecoilRoot>
       <div className="App">
-        <TopMenu setWords={setWords} hasWords={words.length > 0} />
+        <TopMenu hasWords={words.length > 0} />
         <main style={{ background: "lightblue" }}>
           <PuzzleArea words={words} setWords={setWords} />
         </main>
