@@ -22,7 +22,7 @@ const PuzzleArea: React.FC<Iprops> = (props: Iprops) => {
 
   const minLength = 3;
   const [showFill, setShowFill] = useState<boolean>(true);
-  const [selectedWord, setSelectedWord] = useState<Word | null>(null);
+  const [selectedWord, setSelectedWord] = useState<Word | undefined>(undefined);
 
   const addWord = (word: Word | string | Word[]) => {
     if (typeof word === "string") {
