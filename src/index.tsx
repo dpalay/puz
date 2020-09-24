@@ -3,11 +3,12 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import * as serviceWorker from './serviceWorker';
 import App from './Components/App';
+import { RecoilRoot} from "recoil";
 
 ReactDOM.render(
   //TODO:  Re-add strict mode
   //<React.StrictMode>
-    <App />
+    <RecoilRoot><App /></RecoilRoot>
   //</React.StrictMode>,
   ,document.getElementById('root')
 );
