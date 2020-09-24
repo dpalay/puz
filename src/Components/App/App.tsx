@@ -1,13 +1,11 @@
-import React, { useState } from "react";
+import React from "react";
 import "./App.css";
 import TopMenu from "../TopMenu";
 import { PuzzleArea } from "../PuzzleArea";
-import { Word } from "../../Classes";
-import { RecoilRoot, useRecoilState, useRecoilValue } from "recoil";
+import { RecoilRoot, useRecoilState} from "recoil";
 import { wordList } from "../../Recoil";
 
 const App: React.FC = () => {
-  //const [words, setWords] = useState<Word[]>([]);
   const [words, setWords] = useRecoilState(wordList)
 
 
