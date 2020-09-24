@@ -6,9 +6,9 @@ import './WordList.css'
 
 interface Iprops {
     words: Word[]
-    selectedWord: Word | null
+    selectedWord?: Word
     setWords: React.Dispatch<React.SetStateAction<Word[]>>
-    setSelectedWord: React.Dispatch<React.SetStateAction<Word | null>>
+    setSelectedWord: React.Dispatch<React.SetStateAction<Word | undefined>>
 }
 
 
@@ -24,7 +24,7 @@ const WordList: React.FC<Iprops> = (props: Iprops) => {
         setWords(words.filter(word => word !== wordToRemove))
     }
     const handleSelect = (wordToSelect: Word) => {
-        if (selectedWord === wordToSelect) { setSelectedWord(null) }
+        if (selectedWord === wordToSelect) { setSelectedWord(undefined) }
         else { setSelectedWord(wordToSelect) }
     }
 

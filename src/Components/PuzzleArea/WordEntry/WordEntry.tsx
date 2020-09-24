@@ -10,7 +10,7 @@ import {RefetchOptions} from 'axios-hooks'
 interface Iprops {
     words: Word[],
     setWords: React.Dispatch<React.SetStateAction<Word[]>>
-    setSelectedWord: React.Dispatch<React.SetStateAction<Word | null>>
+    setSelectedWord: React.Dispatch<React.SetStateAction<Word | undefined>>
     minLength: number
     refetch: (config?: AxiosRequestConfig | undefined, options?: RefetchOptions | undefined) => AxiosPromise<ReturnData>
 }
@@ -42,7 +42,7 @@ const WordEntry: React.FC<Iprops> = (props: Iprops) => {
         let { word } = values
         word = word.trim().toUpperCase();
         setWords([...words, new Word(word)].sort())
-        setSelectedWord(null)
+        setSelectedWord(undefined)
         form.setFieldsValue({ word: "" })
     }
 
