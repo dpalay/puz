@@ -22,7 +22,7 @@ const PuzzleArea: React.FC<Iprops> = (props: Iprops) => {
 
   const minLength = 3;
   const [showFill, setShowFill] = useState<boolean>(true);
-  const [selectedWord, setSelectedWord] = useState<Word | null>(null);
+  const [selectedWord, setSelectedWord] = useState<Word | undefined>(undefined);
 
   const addWord = (word: Word | string | Word[]) => {
     if (typeof word === "string") {
@@ -80,7 +80,7 @@ const PuzzleArea: React.FC<Iprops> = (props: Iprops) => {
         <Col span={18} order={2}>
           {data && data?.status === "success" ? (
              
-            <PuzContainer showFill={showFill} words={words} data={data} loading={loading} error={error}  />
+            <PuzContainer showFill={showFill} words={words} data={data} loading={loading} error={error} selectedWord={selectedWord} />
           ) : (
             data?.status === "empty" ? <p>No words yet!  Use the form to the left to add words and click "Generate Puzzle"</p> : <p><em>Something went wrong!</em></p>
           )}

@@ -11,11 +11,12 @@ interface IProps {
     showFill: boolean
     loading: boolean
     error: AxiosError<any> | undefined
+    selectedWord?: Word
 }
 
 
 const PuzContainer: React.FC<IProps> = (props: IProps) => {
-    const {data, words, showFill, loading, error} = props
+    const {data, words, showFill, loading, error, selectedWord} = props
 
     let puzzle = useMemo(() => {
         if (data && data.puzzle && data.lettersUsed && data.status === "success") {
@@ -39,7 +40,7 @@ const PuzContainer: React.FC<IProps> = (props: IProps) => {
                   key={cell.id}
                   cell={cell}
                   showFill={showFill}
-                  cellsForWord={[]}
+                  selectedWordId={selectedWord?.id}
                 />
               ))}
             </tr>
