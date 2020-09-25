@@ -52,7 +52,7 @@ const PuzContainer: React.FC<IProps> = (props: IProps) => {
   )}
 </Row>
 <Row className="only-print">
-  <ClueList words={words} />
+  <ClueList />
 </Row>
 </>)
 };
