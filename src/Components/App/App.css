@@ -1,21 +1,19 @@
-@import '~antd/dist/antd.css';
+@import "~antd/dist/antd.css";
 
-@media print
-{    
-    .no-print, .no-print *
-    {
-        display: none !important;
-    }
+@media print {
+  .no-print,
+  .no-print * {
+    display: none !important;
+  }
 
-    .only-print { 
-      display: initial
-       }
+  .only-print {
+    display: initial;
+  }
 }
-
 
 @media screen {
   .only-print {
-    display: none
+    display: none;
   }
 }
 
@@ -24,5 +22,5 @@
 }
 
 main {
-  min-height: 100vh
+  min-height: 100vh;
 }

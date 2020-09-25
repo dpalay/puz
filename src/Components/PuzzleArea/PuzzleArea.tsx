@@ -4,25 +4,32 @@ import { WordEntry, WordList, PuzContainer } from "./";
 import { Row, Col, Button, Affix } from "antd";
 import { useDropzone } from "react-dropzone";
 import useAxios from "axios-hooks";
-import  ReturnData from "../../../functions/src/returnData";
+import ReturnData from "../../../functions/src/returnData";
 import "./PuzzleArea.css";
-import { wordList, selectedWord as selectedWordAtom , hasWords as hasWordSelector} from "../../Recoil";
-import {useRecoilState, useRecoilValue} from 'recoil'
+import {
+  wordList,
+  selectedWord as selectedWordAtom,
+  hasWords as hasWordSelector,
+} from "../../Recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 
-interface Iprops {
-}
+interface Iprops {}
 
 const PuzzleArea: React.FC<Iprops> = (props: Iprops) => {
   const [showFill, setShowFill] = useState<boolean>(true);
   const [selectedWord] = useRecoilState(selectedWordAtom);
-  const [words, setWords] = useRecoilState(wordList)
-  const hasWords = useRecoilValue(hasWordSelector)
+  const [words, setWords] = useRecoilState(wordList);
+  const hasWords = useRecoilValue(hasWordSelector);
 
-  const [{ data, loading, error }, refetch] = useAxios<ReturnData>({
-    url: "https://us-central1-puzzlesearch-d0f54.cloudfunctions.net/makePuzzle",
-    method: "POST",
-    data: { wordList: words },
-  },{manual: true});
+  const [{ data, loading, error }, refetch] = useAxios<ReturnData>(
+    {
+      url:
+        "https://us-central1-puzzlesearch-d0f54.cloudfunctions.net/makePuzzle",
+      method: "POST",
+      data: { wordList: words },
+    },
+    { manual: true }
+  );
 
   const minLength = 3;
 
@@ -81,10 +88,23 @@ const PuzzleArea: React.FC<Iprops> = (props: Iprops) => {
       <Row gutter={16}>
         <Col span={18} order={2}>
           {data && data?.status === "success" ? (
-             
-            <PuzContainer showFill={showFill} words={words} data={data} loading={loading} error={error} selectedWord={selectedWord} />
+            <PuzContainer
+              showFill={showFill}
+              words={words}
+              data={data}
+              loading={loading}
+              error={error}
+              selectedWord={selectedWord}
+            />
+          ) : data?.status === "empty" ? (
+            <p>
+              No words yet! Use the form to the left to add words and click
+              "Generate Puzzle"
+            </p>
           ) : (
-            data?.status === "empty" ? <p>No words yet!  Use the form to the left to add words and click "Generate Puzzle"</p> : <p><em>Something went wrong!</em></p>
+            <p>
+              <em>Something went wrong!</em>
+            </p>
           )}
         </Col>
         <Col span={4} order={1} className={"no-print"}>
@@ -96,10 +116,7 @@ const PuzzleArea: React.FC<Iprops> = (props: Iprops) => {
             >
               Toggle Filler
             </Button>
-            <WordEntry
-              refetch={refetch}
-              minLength={minLength}
-            />
+            <WordEntry refetch={refetch} minLength={minLength} />
             <WordList />
           </Affix>
         </Col>
