@@ -2,16 +2,16 @@ import React from "react";
 import "./App.css";
 import TopMenu from "../TopMenu";
 import { PuzzleArea } from "../PuzzleArea";
-import {useRecoilState} from "recoil";
-import { wordList } from "../../Recoil";
+import {useRecoilValue} from "recoil";
+import { hasWords as hasWordSelector } from "../../Recoil";
 
 const App: React.FC = () => {
-  const [words] = useRecoilState(wordList)
+  const hasWords = useRecoilValue(hasWordSelector)
 
 
   return (
       <div className="App">
-        <TopMenu hasWords={words.length > 0} />
+        <TopMenu hasWords={hasWords} /> 
         <main style={{ background: "lightblue" }}>
           <PuzzleArea/>
         </main>
