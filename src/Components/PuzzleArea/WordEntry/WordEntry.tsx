@@ -6,11 +6,11 @@ import { QuestionCircleOutlined } from '@ant-design/icons';
 import ReturnData  from '../../../../functions/src/returnData';
 import {AxiosPromise, AxiosRequestConfig} from 'axios'
 import {RefetchOptions} from 'axios-hooks'
+import {useRecoilState} from 'recoil'
+import {wordList, selectedWord as selectedWordAtom} from '../../../Recoil'
+
 
 interface Iprops {
-    words: Word[],
-    setWords: React.Dispatch<React.SetStateAction<Word[]>>
-    setSelectedWord: React.Dispatch<React.SetStateAction<Word | undefined>>
     minLength: number
     refetch: (config?: AxiosRequestConfig | undefined, options?: RefetchOptions | undefined) => AxiosPromise<ReturnData>
 }
@@ -23,7 +23,9 @@ interface wordError {
 
 const WordEntry: React.FC<Iprops> = (props: Iprops) => {
   
-    const { words, setWords, setSelectedWord, minLength, refetch } = props
+    const { minLength, refetch } = props
+    const [words, setWords] = useRecoilState(wordList)
+    const [,setSelectedWord] = useRecoilState(selectedWordAtom)
     const handleClick = (e: React.MouseEvent<HTMLElement, MouseEvent>) => 
     {
         e.preventDefault()
