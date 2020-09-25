@@ -6,14 +6,18 @@ import { useDropzone } from "react-dropzone";
 import useAxios from "axios-hooks";
 import  ReturnData from "../../../functions/src/returnData";
 import "./PuzzleArea.css";
-import { wordList } from "../../Recoil";
-import {useRecoilState} from 'recoil'
+import { wordList, selectedWord as selectedWordAtom , hasWords as hasWordSelector} from "../../Recoil";
+import {useRecoilState, useRecoilValue} from 'recoil'
 
 interface Iprops {
 }
 
 const PuzzleArea: React.FC<Iprops> = (props: Iprops) => {
-    const [words, setWords] = useRecoilState(wordList)
+  const [showFill, setShowFill] = useState<boolean>(true);
+  const [selectedWord] = useRecoilState(selectedWordAtom);
+  const [words, setWords] = useRecoilState(wordList)
+  const hasWords = useRecoilValue(hasWordSelector)
+
   const [{ data, loading, error }, refetch] = useAxios<ReturnData>({
     url: "https://us-central1-puzzlesearch-d0f54.cloudfunctions.net/makePuzzle",
     method: "POST",
@@ -21,8 +25,6 @@ const PuzzleArea: React.FC<Iprops> = (props: Iprops) => {
   },{manual: true});
 
   const minLength = 3;
-  const [showFill, setShowFill] = useState<boolean>(true);
-  const [selectedWord, setSelectedWord] = useState<Word | undefined>(undefined);
 
   const addWord = (word: Word | string | Word[]) => {
     if (typeof word === "string") {
@@ -90,23 +92,15 @@ const PuzzleArea: React.FC<Iprops> = (props: Iprops) => {
             <Button
               onClick={() => setShowFill(!showFill)}
               type="primary"
-              disabled={words.length === 0}
+              disabled={!hasWords}
             >
               Toggle Filler
             </Button>
             <WordEntry
               refetch={refetch}
-              setWords={setWords}
-              words={words}
-              setSelectedWord={setSelectedWord}
               minLength={minLength}
             />
-            <WordList
-              words={words}
-              selectedWord={selectedWord}
-              setWords={setWords}
-              setSelectedWord={setSelectedWord}
-            />
+            <WordList />
           </Affix>
         </Col>
       </Row>
