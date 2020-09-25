@@ -6,7 +6,7 @@ import {useRecoilState} from "recoil";
 import { wordList } from "../../Recoil";
 
 const App: React.FC = () => {
-  const [words, setWords] = useRecoilState(wordList)
+  const [words] = useRecoilState(wordList)
 
 
   return (
