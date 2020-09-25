@@ -13,7 +13,7 @@ const App: React.FC = () => {
       <div className="App">
         <TopMenu hasWords={words.length > 0} />
         <main style={{ background: "lightblue" }}>
-          <PuzzleArea words={words} setWords={setWords} />
+          <PuzzleArea/>
         </main>
       </div>
   );

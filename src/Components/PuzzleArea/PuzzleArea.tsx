@@ -6,14 +6,14 @@ import { useDropzone } from "react-dropzone";
 import useAxios from "axios-hooks";
 import  ReturnData from "../../../functions/src/returnData";
 import "./PuzzleArea.css";
+import { wordList } from "../../Recoil";
+import {useRecoilState} from 'recoil'
 
 interface Iprops {
-  words: Word[];
-  setWords: React.Dispatch<React.SetStateAction<Word[]>>;
 }
 
 const PuzzleArea: React.FC<Iprops> = (props: Iprops) => {
-  const { words, setWords } = props;
+    const [words, setWords] = useRecoilState(wordList)
   const [{ data, loading, error }, refetch] = useAxios<ReturnData>({
     url: "https://us-central1-puzzlesearch-d0f54.cloudfunctions.net/makePuzzle",
     method: "POST",
